@@ -1,0 +1,90 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Hello rest.js</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+        <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+        <style>
+div {
+  width: 500px;
+}
+
+h2 {
+  font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  font: 200 20px/1.5 Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
+  background-color: 999;
+}
+
+p:last-child {
+  border: none;
+}
+
+p a {
+  text-decoration: none;
+  color: #000;
+  display: block;
+  width: 200px;
+
+  -webkit-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -moz-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -o-transition: font-size 0.3s ease, background-color 0.3s ease;
+  -ms-transition: font-size 0.3s ease, background-color 0.3s ease;
+  transition: font-size 0.3s ease, background-color 0.3s ease;
+}
+
+
+
+        </style>
+
+
+    </head>
+    <body>
+        <div>
+            <p data-name="id">The ID is </p>
+            <p data-name="content">The deviceId is </p>
+        </div>
+
+
+        <table id="example" class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Device Id</th>
+                <th>Capture date</th>
+            </tr>
+            </thead>
+        </table>
+
+    </body>
+</html>
+
+
+<script type="text/javascript" language="JavaScript" >
+
+
+$(document).ready(function() {
+	       $('#example').DataTable(
+	       {
+                                   "ajax": {
+                                                        url: '/thing',
+                                                        dataSrc: ''
+                                    },
+                                    "columns": [
+                                             {data : "id"},
+                                             {data : "deviceId"},
+                                             {data : "captureDate"}
+                                    ]
+           }
+
+	       );
+} );
+
+
+        </script>
