@@ -11,7 +11,7 @@
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
-apply plugin: 'war'
+
 
 
 // In this section you declare where to find the dependencies of your project
@@ -40,8 +40,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.data:spring-data-mongodb:1.9.3.RELEASE")
-    providedRuntime("org.apache.tomcat.embed:tomcat-embed-jasper")
-    providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile("org.springframework.boot:spring-boot-devtools")
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
@@ -59,15 +59,8 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    providedRuntime
-}
+
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
-}
-
-war {
-    baseName = 'IoT'
-    version = '0.1'
 }

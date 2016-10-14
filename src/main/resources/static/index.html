@@ -41,17 +41,15 @@ p a {
 
 
 
-        </style>
-
+</style>
 
     </head>
     <body>
-        <div>
-            <p data-name="id">The ID is </p>
-            <p data-name="content">The deviceId is </p>
-        </div>
 
-
+        <center>
+            <img src="banner.jpg" width="80%" height="100px" >
+            </center>
+        <center>
         <table id="example" class="display" cellspacing="0" width="100%">
             <thead>
             <tr>
@@ -61,30 +59,28 @@ p a {
             </tr>
             </thead>
         </table>
-
+</center>
     </body>
 </html>
 
 
 <script type="text/javascript" language="JavaScript" >
 
-
 $(document).ready(function() {
 	       $('#example').DataTable(
 	       {
-                                   "ajax": {
-                                                        url: '/thing',
-                                                        dataSrc: ''
-                                    },
-                                    "columns": [
-                                             {data : "id"},
-                                             {data : "deviceId"},
-                                             {data : "captureDate"}
-                                    ]
+                "ajax": {
+                    url: '/thing',
+                    dataSrc: ''
+                },
+                "columns": [
+                    {data : "id"},
+                    {data : "deviceId"},
+                    {data : "captureDate"}
+                ]
            }
 
 	       );
 } );
 
-
-        </script>
+</script>
