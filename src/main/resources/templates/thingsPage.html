@@ -1,0 +1,67 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+        <title>Hello rest.js</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+        <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    </head>
+    <body>
+
+        <center>
+            <img src="/banner.jpg" width="80%" height="100px" />
+            </center>
+        <center>
+            Hello, Welcome to the template page
+
+        </center>
+            <div class="container-fluid" style="width:50%">
+
+                <table id="example" class="table table-bordered table-striped" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Delete</th>
+                            <th>Edit</th>
+                            <th>Id</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="singleThing : ${things}">
+                            <td><a th:href="@{'/things/delete/'+ ${singleThing.id}}"><i class="fa fa-trash-o fa-fw"></i></a></td>
+                            <td><a th:href="@{'/things/edit/'+ ${singleThing.id}}"><i class="fa fa-pencil fa-fw"></i></a></td>
+                            <td><p th:text="${singleThing.id}" /></td>
+                            <td><p th:text="${singleThing.name}" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <form action="#" th:action="@{/things}" th:object="${thing}" method="post">
+                <div class="container-fluid" style="width:50%">
+                <table id="submit" class="display" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <p> Add thing: </p>
+                        </td>
+                        <td>
+                            <p> Name <input type="text" th:field="*{name}" /> <input type="submit" /> </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </form>
+
+
+    </body>
+</html>
+

@@ -24,7 +24,8 @@ public class Thing implements Serializable, Persistable<String> {
 
     @Id
     private String id;
-    //private String deviceId;
+
+    private String name;
 
     @Transient
     private List<Capture> captures;
@@ -58,8 +59,16 @@ public class Thing implements Serializable, Persistable<String> {
         return id;
     }
 
-    public void setDeviceId(String id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 /*

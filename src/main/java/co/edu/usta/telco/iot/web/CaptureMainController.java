@@ -9,12 +9,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/thing/capture")
 public class CaptureMainController {
 
     @Autowired
@@ -22,28 +23,13 @@ public class CaptureMainController {
     @Autowired
     private ThingRepository thingRepository;
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    ResponseEntity<List<Capture>> getAll() {
-        return new ResponseEntity<List<Capture>>(captureRepository.findAll(), HttpStatus.OK);
+    @RequestMapping(method = RequestMethod.GET, value = "/things/{thingId}/captures")
+    String getAllModel(Model model, @PathVariable String thingId) {
+        thingRepository.findOne(thingId);
+        List<Capture> listCapture = captureRepository.findByDeviceId(thingId);
+
+        model.addAttribute("captures", listCapture);
+        return "capturesPage";
     }
 
-    @RequestMapping(value = "/{captureId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    ResponseEntity<Capture> getThingInformation( @PathVariable String captureId, @RequestParam(required = false) String thing2) { // thing2 sample for url?things=value
-        return new ResponseEntity<Capture>(captureRepository.findOne(captureId), HttpStatus.OK);
-    }
-
-    @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    ResponseEntity createThingInformation(@RequestBody Capture capture) {
-        captureRepository.save(capture);
-        System.out.println(capture.getDeviceId());
-//        thingRepository.findOne(capture.getDeviceId()).addCapture(capture);
-        Thing thing = thingRepository.findOne(capture.getDeviceId());
-        thing.setCaptures(captureRepository.findByDeviceId(capture.getDeviceId()));
-        System.out.println(thing.getId());
-        //thing.addCapture(capture);
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
 }

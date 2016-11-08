@@ -1,0 +1,28 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+        <title>Hello rest.js</title>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+        <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
+
+    </head>
+    <body>
+
+        <center>
+            <img src="/banner.jpg" width="80%" height="100px" />
+            </center>
+        <center>
+            Hello, Welcome to the template page
+
+        </center>
+        <center>
+            <form action="#" th:action="@{/thing}" th:object="${thing}" method="post">
+                <p> Id <input type="text" th:field="*{id}" /></p>
+                <p> Name <input type="text" th:field="*{name}" /></p>
+            </form>
+
+        </center>
+    </body>
+</html>
+
