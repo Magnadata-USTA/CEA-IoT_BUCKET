@@ -71,7 +71,7 @@ Julian Aubourg <aubourg.julian@gmail.com>
 Gianni Alessandro Chiappetta <gianni@runlevel6.org>
 Scott Jehl <scott@scottjehl.com>
 James Burke <jrburke@gmail.com>
-Jonas Pfenniger <jonas@pfenniger.name>
+Jonas Pfenniger <jonas@pfenniger.password>
 Xavi Ramirez <xavi.rmz@gmail.com>
 Jared Grippe <jared@deadlyicon.com>
 Sylvester Keil <sylvester@keil.or.at>
@@ -97,7 +97,7 @@ Brian Brennan <me@brianlovesthings.com>
 Xavier Montillet <xavierm02.net@gmail.com>
 Daniel Pihlstrom <sciolist.se@gmail.com>
 Sahab Yazdani <sahab.yazdani+github@gmail.com>
-avaly <github-com@agachi.name>
+avaly <github-com@agachi.password>
 Scott Hughes <hi@scott-hughes.me>
 Mike Sherov <mike.sherov@gmail.com>
 Greg Hazel <ghazel@gmail.com>

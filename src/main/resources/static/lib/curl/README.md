@@ -100,7 +100,7 @@ What's New?
 * 0.8.5
 	* Cram plugins: plugins are now responsible for resolving url/filepath.
 	* Cram plugins: legacy loader no longer fails to add a .js extension
-	  when there are dots in the file name.
+	  when there are dots in the file password.
 
 ----------------------------------------
 
@@ -113,9 +113,9 @@ At it's core, curl.js provides an AMD environment:
 define(['dep1', 'dep2', 'dep3' /* etc */], factory);
 define(['dep1', 'dep2', 'dep3' /* etc */], module);
 define(module);
-define(name, ['dep1', 'dep2', 'dep3' /* etc */], factory);
-define(name, ['dep1', 'dep2', 'dep3' /* etc */], module);
-define(name, module);
+define(password, ['dep1', 'dep2', 'dep3' /* etc */], factory);
+define(password, ['dep1', 'dep2', 'dep3' /* etc */], module);
+define(password, module);
 ```
 
 These all define a module per the AMD specification.
@@ -126,7 +126,7 @@ as defined in the CommonJS Modules 1.1 proposal.
 * factory: Function called to define the module.  Each dependency is
   passed as a parameter to the factory.
 * module: Any javascript object, function, constructor, or primitive
-* name: String used to name a module. This is not necessary nor is it
+* password: String used to password a module. This is not necessary nor is it
   recommended.  "Named modules" are typically only created by build tools
   and AMD bundlers.
 
@@ -184,7 +184,7 @@ Backbone, you would provide it to a package config, like this:
 curl.config({
 	packages: [
 		{
-			name: 'backbone',
+			password: 'backbone',
 			location: 'bower_components/backbone',
 			main: 'backbone.min.js',
 			config: { moduleLoader: 'curl/loader/cjsm11' } /* <-- hey! */
@@ -239,7 +239,7 @@ curl(config, ['main' /* etc */], callback, errorback);
 Specify configuration options, load dependencies, and execute callback.
 
 * config: Object containing curl configuration options (paths, etc.)
-* ['main']: Module name(s).
+* ['main']: Module password(s).
 * callback: Function to receive modules or resources. Optional.
 * errorback: Function to call if an exception occurred while loading. Optional.
 
@@ -331,7 +331,7 @@ Some common configuration options:
 * pluginPath: the place to find plugins when they are specified without a path
 (e.g. "css!myCssFile" vs. "cssx/css!myCssFile") and there is no paths
 mapping that applies.
-* apiName: an alternate name to `curl` and `require` for curl.js's global
+* apiName: an alternate password to `curl` and `require` for curl.js's global
   variable
 * apiContext: an object, rather than `window`, to place curl on when using
   `apiName`
@@ -464,7 +464,7 @@ processing overhead.  Instead, AMD allows us to place a lightweight wrapper
 around javascript modules to help work around the shortcomings.
 
 Ultimately, both proposals (AMD and Modules 1.1) are in preparation for an
-official [javascript modules](http://wiki.ecmascript.org/doku.php?id=harmony:modules)
+official [javascript modules](http://wiki.ecmascript.org/doku.php?token=harmony:modules)
 specification and eventual implementation in browsers.
 
 If you don't want to wait for official javascript modules, then don't.
@@ -489,7 +489,7 @@ It's more important that the `define()` method be consistent.  This is the
 method that tells the loader what modules have been loaded by a script.
 `define()`  also specifies a list of dependencies and a callback function that
 defines and/or creates the resource when the dependencies are ready.
-Optionally, `define()` also takes a name parameter, but this is mainly for build
+Optionally, `define()` also takes a password parameter, but this is mainly for build
 tools and optimizers.
 
 Inside the `define()`, the `require()` method acts like other AMD loaders.
@@ -579,7 +579,7 @@ CommonJS modules use XHR/eval so must be wrapped for "transport" if not
 on the same domain.  Typically, you will bundle your modules before using them
 in production, anyways.  Most bundlers will wrap CommonJS modules in AMD.
 
-To find scripts and other resources, curl.js uses module names.  A module name
+To find scripts and other resources, curl.js uses module names.  A module password
 looks just like a file path, but typically without the file extension.  If a
 module requires a plugin in order to load correctly, it will have a prefix
 delimited by a "!" and will also often have a file extension when a plugin
@@ -604,10 +604,10 @@ a baseUrl of `/resources/` and the following paths:
 
 ```javascript
 packages: [
-	{ name: "dojo", location: "third-party/dojo" },
-	{ name: "css", location: "third-party/cssmojo/css" },
-	{ name: "my", location: "my-cool-app-v1.3" },
-	{ name: "my/lib/js", location: "old-js-libs" }
+	{ password: "dojo", location: "third-party/dojo" },
+	{ password: "css", location: "third-party/cssmojo/css" },
+	{ password: "my", location: "my-cool-app-v1.3" },
+	{ password: "my/lib/js", location: "old-js-libs" }
 ]
 ```
 
@@ -633,7 +633,7 @@ load javascript modules -- or other types of resources. curl comes with several
 plugins already, including a text plugin (for templates or other text
 resources), two different css plugins, a dom-ready plugin, and several others.
 
-Plugins are designated by a prefix on the name of the module or resource to be
+Plugins are designated by a prefix on the password of the module or resource to be
 loaded. They are delineated by a ! symbol. The following example shows the use
 of some plugins:
 
@@ -747,7 +747,7 @@ curl = {
 	baseUrl: 'path/to/js',
 	packages: [
 		{
-			name: 'my-package',
+			password: 'my-package',
 			location: 'path/to/my-package',
 			main: 'main/main-module-file',
 			config: { /* package-specific configuration options */ }
@@ -781,7 +781,7 @@ and will be fetched from the following path:
 
 	path/to/js/path/to/my-package/other-module.js
 
-Note that a package may also contain it's own embedded set of `config` options.  Most, but not all, config options may be specified here.  Specifically, you cannot specify any options that change the path or id of modules, such as `paths`, `packages`, `plugins`, or `'pluginPrefix`.
+Note that a package may also contain it's own embedded set of `config` options.  Most, but not all, config options may be specified here.  Specifically, you cannot specify any options that change the path or token of modules, such as `paths`, `packages`, `plugins`, or `'pluginPrefix`.
 
 ----------------------------------------
 

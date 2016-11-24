@@ -1,6 +1,6 @@
-package co.edu.usta.telco.iot.web;
+package co.edu.usta.telco.iot.web.api;
 
-import co.edu.usta.telco.iot.data.model.Thing;
+import co.edu.usta.telco.iot.data.model.Device;
 import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.ThingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,22 +24,22 @@ public class ApiThingMainController {
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity<List<Thing>> getAll() {
-        return new ResponseEntity<List<Thing>>(thingRepository.findAll(), HttpStatus.OK);
+    ResponseEntity<List<Device>> getAll() {
+        return new ResponseEntity<List<Device>>(thingRepository.findAll(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{thingId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity<Thing> getThingInformation( @PathVariable String thingId, @RequestParam(required = false) String thing2) { // thing2 sample for url?things=value
+    ResponseEntity<Device> getThingInformation(@PathVariable String thingId, @RequestParam(required = false) String thing2) { // thing2 sample for url?things=value
 
-        Thing thing = thingRepository.findOne(thingId);
-        thing.setCaptures(captureRepository.findByDeviceId(thing.getId()));
-        return new ResponseEntity<Thing>(thing, HttpStatus.OK);
+        Device thing = thingRepository.findOne(thingId);
+//        thing.setCaptures(captureRepository.findByDeviceId(thing.getId()));
+        return new ResponseEntity<Device>(thing, HttpStatus.OK);
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity createThingInformation(@RequestBody Thing thing) {
+    ResponseEntity createThingInformation(@RequestBody Device thing) {
         thingRepository.save(thing);
         return new ResponseEntity(HttpStatus.CREATED);
     }

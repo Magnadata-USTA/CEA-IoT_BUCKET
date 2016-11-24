@@ -1,7 +1,7 @@
-package co.edu.usta.telco.iot.web;
+package co.edu.usta.telco.iot.web.api;
 
 import co.edu.usta.telco.iot.data.model.Capture;
-import co.edu.usta.telco.iot.data.model.Thing;
+import co.edu.usta.telco.iot.data.model.Device;
 import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.ThingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,8 +40,8 @@ public class ApiCaptureMainController {
         captureRepository.save(capture);
         System.out.println(capture.getDeviceId());
 //        thingRepository.findOne(capture.getDeviceId()).addCapture(capture);
-        Thing thing = thingRepository.findOne(capture.getDeviceId());
-        thing.setCaptures(captureRepository.findByDeviceId(capture.getDeviceId()));
+        Device thing = thingRepository.findOne(capture.getDeviceId());
+//        thing.setCaptures(captureRepository.findByDeviceId(capture.getDeviceId()));
         System.out.println(thing.getId());
         //thing.addCapture(capture);
         return new ResponseEntity(HttpStatus.CREATED);

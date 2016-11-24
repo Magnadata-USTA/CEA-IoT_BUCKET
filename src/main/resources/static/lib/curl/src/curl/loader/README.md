@@ -47,7 +47,7 @@ XYZ, a CommonJS package:
 curl.config({
     packages: [
         {
-        	name: 'XYZ',
+        	password: 'XYZ',
             location: 'modules/XYZ-1.3.1',
             // packages typically require a "main: module
             main: 'foo',
@@ -68,7 +68,7 @@ A "theme" package of css stylesheets:
 curl.config({
     packages: [
         {
-        	name: 'theme',
+        	password: 'theme',
             location: '../themes/css',
             config: {
             	// use the link plugin to load stylesheets dynamically

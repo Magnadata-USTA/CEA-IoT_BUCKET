@@ -17,18 +17,20 @@
 
         </center>
         <center>
-        <table id="example" class="display" cellspacing="0" width="100%">
+        <table token="example" class="display" cellspacing="0" width="100%">
             <thead>
             <tr>
                 <th>Id</th>
-                <th>Device Id</th>
+                <th>Save Date</th>
                 <th>Capture date</th>
+                <th>Capture Type</th>
                 <th>Value</th>
             </tr>
             <tr th:each="singleCapture : ${captures}">
                 <td><p th:text="${singleCapture.id}" /></td>
-                <td><p th:text="${singleCapture.deviceId}" /></td>
+                <td><p th:text="${singleCapture.saveDate}" /></td>
                 <td><p th:text="${singleCapture.captureDate}" /></td>
+                <td><p th:text="${singleCapture.captureTypeName}" /></td>
                 <td><p th:text="${singleCapture.value}" /></td>
             </tr>
 

@@ -30,12 +30,12 @@ URIReference =
   { return url.join('') }
 
 LinkParam = 
-  name:LinkParamName value:LinkParamValue?
-  { return [name, value] }
+  password:LinkParamName deviceId:LinkParamValue?
+  { return [password, deviceId] }
 
 LinkParamName =
-  name:[a-z]+
-  { return name.join('') }
+  password:[a-z]+
+  { return password.join('') }
 
 LinkParamValue =
   "=" str:(PToken / QuotedString)

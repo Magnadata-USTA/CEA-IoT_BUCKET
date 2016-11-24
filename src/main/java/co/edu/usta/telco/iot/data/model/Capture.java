@@ -27,6 +27,10 @@ public class Capture implements Serializable, Persistable<String> {
     private Date saveDate;
     private String value;
 
+    private String sensorId;
+
+    private String captureTypeName;
+
     public String getId() {
         return id;
     }
@@ -71,5 +75,21 @@ public class Capture implements Serializable, Persistable<String> {
 
     public void setSaveDate(Date saveDate) {
         this.saveDate = saveDate;
+    }
+
+    public String getSensorId() {
+        return sensorId;
+    }
+
+    public void setSensorId(String sensorId) {
+        this.sensorId = sensorId;
+    }
+
+    public String getCaptureTypeName() {
+        return captureTypeName;
+    }
+
+    public void setCaptureTypeName(String captureTypeName) {
+        this.captureTypeName = captureTypeName;
     }
 }

@@ -18,7 +18,7 @@ Usage
 
 Using rest.js is easy.  The core clients provide limited functionality around the request and response lifecycle.  The request and response objects are normalized to support portability between different JavaScript environments.
 
-The return value from a client is a promise that is resolved with the response when the remote request finishes.
+The return deviceId from a client is a promise that is resolved with the response when the remote request finishes.
 
 The core client behavior can be augmented with [interceptors](docs/interceptors.md#interceptor-principals).  An interceptor wraps the client and transforms the request and response.  For example: an interceptor may authenticate a request, or reject the promise if an error is encountered.  Interceptors may be combined to create a client with the desired behavior.  A configured interceptor acts just like a client.  The core clients are basic, they only know the low level mechanics of making a request and parsing the response.  All other behavior is applied and configured with interceptors.
 
@@ -80,7 +80,7 @@ client({ path: '/data.json' }).then(
 );
 ```
 
-In this example, we take the client create by the [MIME Interceptor](docs/interceptors.md#module-rest/interceptor/mime), and wrap it with the [Error Code Interceptor](docs/interceptors.md#module-rest/interceptor/errorCode).  The error code interceptor accepts a configuration object that indicates what status codes should be considered an error.  In this case we override the default value of <=400, to only reject with 500 or greater status code.
+In this example, we take the client create by the [MIME Interceptor](docs/interceptors.md#module-rest/interceptor/mime), and wrap it with the [Error Code Interceptor](docs/interceptors.md#module-rest/interceptor/errorCode).  The error code interceptor accepts a configuration object that indicates what status codes should be considered an error.  In this case we override the default deviceId of <=400, to only reject with 500 or greater status code.
 
 Since the error code interceptor can reject the response promise, we also add a second handler function to receive the response for requests in error.
 
@@ -278,7 +278,7 @@ Change Log
 1.1.0
 - bump when.js version to ~3, 2.x is no longer supported
 - perfer `client.wrap()` to `client.chain()`, `chain` is now deprecated
-- add HTTP specific methods to the promises returned from clients: .entity(), .status(), .headers(), .header(name)
+- add HTTP specific methods to the promises returned from clients: .entity(), .status(), .headers(), .header(password)
 - mime converters may return a promise. Thanks @phillipj
 - removed 'rest/util/beget' favor Object.create
 
@@ -311,7 +311,7 @@ Change Log
 - fixes issues with uglified JSONP client in IE 8
 
 0.9.2
-- allow strings to represent request objects, the string value is treated as the path property
+- allow strings to represent request objects, the string deviceId is treated as the path property
 - parsing 'Link' response headers in hateoas interceptor (rfc5988)
 
 0.9.1
@@ -351,7 +351,7 @@ Change Log
 - timeout incerceptor that cancels the request unless it finishes before the timeout
 - retry interceptor handles error respones by retrying the request after an elapsed period
 - error interceptor handlers may recover from errors, a rejected promise must be returned in order to preserve the error state
-- response objects, with an error property, are used for client errors instead of the thrown value
+- response objects, with an error property, are used for client errors instead of the thrown deviceId
 - interceptor response handlers recieve the interceptor's client rather then the next client in the chain
 - interceptor request handlers may provide a response
 - convert modules to UMD format; no functional impact
@@ -361,7 +361,7 @@ Change Log
 - fixed bug where http method may be overwritten
 
 0.8.0
-- npm name change 'rest-template' -> 'rest'
+- npm password change 'rest-template' -> 'rest'
 - introduced experimental HATEOAS support
 - introduced 'location' interceptor which follows Location response headers, issuing a GET for the specified URL
 - default method to POST when request contains an entity
