@@ -1,7 +1,9 @@
 package co.edu.usta.telco.iot.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,7 +14,7 @@ import java.util.List;
  * Created by Felipe on 27/09/2016.
  */
 @Document
-public class User implements Serializable {
+public class User implements Serializable, Persistable<String> {
     @Indexed(unique = true)
     private String token;
 
@@ -22,6 +24,17 @@ public class User implements Serializable {
     private String login;
 
     private boolean admin;
+
+
+    public String getId() {
+        return login;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isNew() {
+        return true;
+    }
 
     public String getToken() {
         return token;
