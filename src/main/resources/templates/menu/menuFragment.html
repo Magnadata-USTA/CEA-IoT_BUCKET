@@ -13,12 +13,11 @@
 
     </head>
     <body>
-        <div th:fragment="menuFragment" >
-            <ul>
-                Manage Solution
-            <a href="#" >List all solutions</a>
-            </ul>
-        </div>
+        <ul th:fragment="menuFragment"  class="nav nav-pills">
+            <li role="presentation" class="active"><a href="#">Home</a></li>
+            <li role="presentation"><a href="#">Profile</a></li>
+            <li role="presentation"><a href="#">Solutions</a></li>
+        </ul>
     </body>
 </html>
 

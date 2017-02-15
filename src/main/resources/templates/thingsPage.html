@@ -13,66 +13,74 @@
 </head>
 <body>
 
-<div style="width:100%">
-    <div style="padding-left:40px">
-        <img src="/iot_logo.png"  />
-        <img src="/banner.png" height="120px" />
-    </div>
-</div>
-<div style="padding:10px">
-</div>
-<div>
-<table width="100%">
-    <tr>
-        <td width="10%">
-            <div th:include="menu/menuFragment :: menuFragment"></div>
-        </td>
-        <td width="90%">
-            <div class="container-fluid" style="width:50%">
-
-                <table token="example" class="table table-bordered table-striped" cellspacing="0" width="100%">
-                    <thead>
-                    <tr>
-                        <th>Delete</th>
-                        <th>Edit</th>
-                        <th>Id</th>
-                        <th>Name</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="singleThing : ${things}">
-                        <td><a th:href="@{'/things/delete/'+ ${singleThing.id}}"><i class="fa fa-trash-o fa-fw"></i></a>
-                        </td>
-                        <td><a th:href="@{'/things/edit/'+ ${singleThing.id}}"><i class="fa fa-pencil fa-fw"></i></a>
-                        </td>
-                        <td><p th:text="${singleThing.id}"/></td>
-                        <td><p th:text="${singleThing.name}"/></td>
-                    </tr>
-                    </tbody>
-                </table>
-
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">IoT Repository</a>
             </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/">Home</a></li>
+                <li><a href="#">Solutions</a></li>
+                <li><a href="#">Page 2</a></li>
+                <li><a href="#">Page 3</a></li>
+            </ul>
+        </div>
+    </nav>
 
-            <form action="#" th:action="@{/things}" th:object="${thing}" method="post">
+    <div style="padding:10px">
+    </div>
+    <div>
+    <table width="100%">
+        <tr>
+            <td width="10%">
+                <div th:include="menu/menuFragment :: menuFragment"></div>
+            </td>
+            <td width="90%">
                 <div class="container-fluid" style="width:50%">
-                    <table token="submit" class="display" cellspacing="0">
-                        <tbody>
+
+                    <table token="example" class="table table-bordered table-striped" cellspacing="0" width="100%">
+                        <thead>
                         <tr>
-                            <td>
-                                <p> Add thing: </p>
+                            <th>Delete</th>
+                            <th>Edit</th>
+                            <th>Id</th>
+                            <th>Name</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="singleThing : ${things}">
+                            <td><a th:href="@{'/things/delete/'+ ${singleThing.id}}"><i class="fa fa-trash-o fa-fw"></i></a>
                             </td>
-                            <td>
-                                <p> Name <input type="text" th:field="*{name}"/> <input type="submit"/></p>
+                            <td><a th:href="@{'/things/edit/'+ ${singleThing.id}}"><i class="fa fa-pencil fa-fw"></i></a>
                             </td>
+                            <td><p th:text="${singleThing.id}"/></td>
+                            <td><p th:text="${singleThing.name}"/></td>
                         </tr>
                         </tbody>
                     </table>
+
                 </div>
-            </form>
-        </td>
-    </tr>
-</table>
-</div >
+
+                <form action="#" th:action="@{/things}" th:object="${thing}" method="post">
+                    <div class="container-fluid" style="width:50%">
+                        <table token="submit" class="display" cellspacing="0">
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <p> Add thing: </p>
+                                </td>
+                                <td>
+                                    <p> Name <input type="text" th:field="*{name}"/> <input type="submit"/></p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+    </div >
 
 </body>
 </html>
