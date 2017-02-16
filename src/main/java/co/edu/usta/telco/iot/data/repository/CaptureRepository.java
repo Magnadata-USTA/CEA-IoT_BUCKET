@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Felipe on 29/09/2016.
  */
 public interface CaptureRepository extends MongoRepository<Capture, String>{
-    public List<Capture> findAll();
-    public List<Capture> findByDeviceId(String deviceId);
+    List<Capture> findAll();
+    List<Capture> findByDeviceId(String deviceId);
 
 }

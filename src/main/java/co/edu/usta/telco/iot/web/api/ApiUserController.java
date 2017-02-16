@@ -1,7 +1,7 @@
 package co.edu.usta.telco.iot.web.api;
 
 import co.edu.usta.telco.iot.data.model.User;
-import co.edu.usta.telco.iot.data.repository.ThingRepository;
+import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import co.edu.usta.telco.iot.data.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,12 +14,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/users")
-public class ApiUserMainController {
+public class ApiUserController {
 
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private ThingRepository thingRepository;
+    private DeviceRepository deviceRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
