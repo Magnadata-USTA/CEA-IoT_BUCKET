@@ -3,7 +3,7 @@ package co.edu.usta.telco.iot.web.api;
 import co.edu.usta.telco.iot.data.model.Capture;
 import co.edu.usta.telco.iot.data.model.Device;
 import co.edu.usta.telco.iot.data.repository.CaptureRepository;
-import co.edu.usta.telco.iot.data.repository.ThingRepository;
+import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,12 +15,12 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/api/thing/capture")
-public class ApiCaptureMainController {
+public class ApiCaptureController {
 
     @Autowired
     private CaptureRepository captureRepository;
     @Autowired
-    private ThingRepository thingRepository;
+    private DeviceRepository deviceRepository;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -39,8 +39,8 @@ public class ApiCaptureMainController {
     ResponseEntity createThingInformation(@RequestBody Capture capture) {
         captureRepository.save(capture);
         System.out.println(capture.getDeviceId());
-//        thingRepository.findOne(capture.getDeviceId()).addCapture(capture);
-        Device thing = thingRepository.findOne(capture.getDeviceId());
+//        deviceRepository.findOne(capture.getDeviceId()).addCapture(capture);
+        Device thing = deviceRepository.findOne(capture.getDeviceId());
 //        thing.setCaptures(captureRepository.findByDeviceId(capture.getDeviceId()));
         System.out.println(thing.getId());
         //thing.addCapture(capture);

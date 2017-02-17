@@ -6,9 +6,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 /**
+ * Device repository
  * Created by Felipe on 29/09/2016.
  */
-public interface ThingRepository extends MongoRepository<Device, String>{
-    public List<Device> findAll();
-
+public interface DeviceRepository extends MongoRepository<Device, String>{
+    List<Device> findAll();
 }

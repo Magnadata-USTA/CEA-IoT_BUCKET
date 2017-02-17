@@ -2,7 +2,7 @@ package co.edu.usta.telco.iot.web;
 
 import co.edu.usta.telco.iot.data.model.Device;
 import co.edu.usta.telco.iot.data.repository.CaptureRepository;
-import co.edu.usta.telco.iot.data.repository.ThingRepository;
+import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,18 +11,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/things")
-public class ThingMainController {
+@RequestMapping("/devices")
+public class DeviceMainController {
 
     @Autowired
-    private ThingRepository thingRepository;
+    private DeviceRepository deviceRepository;
 
     @Autowired
     private CaptureRepository captureRepository;
 
     @RequestMapping(method = RequestMethod.GET)
     String getAllModel(Model model) {
-        List<Device> listThings = thingRepository.findAll();
+        List<Device> listThings = deviceRepository.findAll();
 
         model.addAttribute("things", listThings );
         model.addAttribute("thing", new Device());
@@ -31,9 +31,9 @@ public class ThingMainController {
 
     @RequestMapping(method = RequestMethod.POST)
     String createThing(@ModelAttribute Device thing, Model model) {
-        thingRepository.save(thing);
+        deviceRepository.save(thing);
 
-        List<Device> listThings = thingRepository.findAll();
+        List<Device> listThings = deviceRepository.findAll();
         model.addAttribute("things", listThings);
         model.addAttribute("thing", new Device());
 
@@ -42,8 +42,8 @@ public class ThingMainController {
 
     @RequestMapping(path = "/delete/{thingId}", method = RequestMethod.GET)
     String createThing(@PathVariable String thingId, Model model) {
-        thingRepository.delete(thingId);
-        List<Device> listThings = thingRepository.findAll();
+        deviceRepository.delete(thingId);
+        List<Device> listThings = deviceRepository.findAll();
         model.addAttribute("things", listThings);
         model.addAttribute("thing", new Device());
         return "thingsPage";
@@ -51,7 +51,7 @@ public class ThingMainController {
 
     @RequestMapping(path = "/edit/{thingId}", method = RequestMethod.GET)
     String editThing(@PathVariable String thingId, Model model) {
-        Device thing = thingRepository.findOne(thingId);
+        Device thing = deviceRepository.findOne(thingId);
         model.addAttribute("thing", thing);
         return "editPage";
     }
@@ -60,8 +60,8 @@ public class ThingMainController {
     @RequestMapping(path = "/saveEdit", method = RequestMethod.POST)
     String editThing(@ModelAttribute Device thing, Model model) {
 
-        thingRepository.save(thing);
-        List<Device> listThings = thingRepository.findAll();
+        deviceRepository.save(thing);
+        List<Device> listThings = deviceRepository.findAll();
         model.addAttribute("things", listThings);
         model.addAttribute("thing", new Device());
         return "thingsPage";
