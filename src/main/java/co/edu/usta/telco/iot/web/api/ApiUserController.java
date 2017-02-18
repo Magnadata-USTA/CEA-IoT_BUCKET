@@ -24,18 +24,21 @@ public class ApiUserController {
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     ResponseEntity<List<User>> getAll() {
-        return new ResponseEntity<List<User>>(userRepository.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(userRepository.findAll(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity<User> getUserInformation( @PathVariable String userId) { // thing2 sample for url?things=value
-        return new ResponseEntity<User>(userRepository.findOne(userId), HttpStatus.OK);
+    ResponseEntity<User> getUserInformation( @PathVariable String userId) {
+        return new ResponseEntity<>(userRepository.findOne(userId), HttpStatus.OK);
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     ResponseEntity createUserInformation(@RequestBody User user) {
+        if (user == null) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
         userRepository.save(user);
         return new ResponseEntity(HttpStatus.CREATED);
     }
