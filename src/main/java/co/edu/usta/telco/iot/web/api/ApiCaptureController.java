@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/thing/capture")
+@RequestMapping("/api/sensor/{sensorId}/captures")
 public class ApiCaptureController {
 
     @Autowired
@@ -30,7 +30,7 @@ public class ApiCaptureController {
 
     @RequestMapping(value = "/{captureId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity<Capture> getThingInformation( @PathVariable String captureId, @RequestParam(required = false) String thing2) { // thing2 sample for url?things=value
+    ResponseEntity<Capture> getThingInformation( @PathVariable String captureId) {
         return new ResponseEntity<Capture>(captureRepository.findOne(captureId), HttpStatus.OK);
     }
 
@@ -46,6 +46,5 @@ public class ApiCaptureController {
         //thing.addCapture(capture);
         return new ResponseEntity(HttpStatus.CREATED);
     }
-
 
 }

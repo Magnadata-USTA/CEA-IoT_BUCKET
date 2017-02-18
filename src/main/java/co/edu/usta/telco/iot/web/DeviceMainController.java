@@ -22,16 +22,16 @@ public class DeviceMainController {
 
     @RequestMapping(method = RequestMethod.GET)
     String getAllModel(Model model) {
-        List<Device> listThings = deviceRepository.findAll();
+        List<Device> listDevices = deviceRepository.findAll();
 
-        model.addAttribute("things", listThings );
-        model.addAttribute("thing", new Device());
+        model.addAttribute("devices", listDevices );
+        model.addAttribute("device", new Device());
         return "thingsPage";
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    String createThing(@ModelAttribute Device thing, Model model) {
-        deviceRepository.save(thing);
+    String createDevice(@ModelAttribute Device device, Model model) {
+        deviceRepository.save(device);
 
         List<Device> listThings = deviceRepository.findAll();
         model.addAttribute("things", listThings);
@@ -50,9 +50,9 @@ public class DeviceMainController {
     }
 
     @RequestMapping(path = "/edit/{thingId}", method = RequestMethod.GET)
-    String editThing(@PathVariable String thingId, Model model) {
-        Device thing = deviceRepository.findOne(thingId);
-        model.addAttribute("thing", thing);
+    String editThing(@PathVariable String deviceId, Model model) {
+        Device device = deviceRepository.findOne(deviceId);
+        model.addAttribute("device", device);
         return "editPage";
     }
 

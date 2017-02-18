@@ -25,7 +25,7 @@ public class ApiDeviceController {
         return new ResponseEntity<List<Device>>(deviceRepository.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{thingId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{deviceId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     ResponseEntity<Device> getThingInformation(@PathVariable String deviceId) {
         Device thing = deviceRepository.findOne(deviceId);
@@ -45,11 +45,11 @@ public class ApiDeviceController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @RequestMapping( method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{deviceId}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     ResponseEntity modifyDevice(@RequestBody Device device) {
         if (device.getId() == null) {
-            return new ResponseEntity("Entity creation doesn't take an ID", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity("Entity modification takes an ID", HttpStatus.BAD_REQUEST);
         }
         deviceRepository.save(device);
         return new ResponseEntity(HttpStatus.OK);
