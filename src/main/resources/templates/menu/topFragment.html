@@ -1,0 +1,31 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Hello rest.js</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div th:fragment="topFragment" >
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">IoT Repository</a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="/solutions">Solutions</a></li>
+                        <li><a href="/things">Devices</a></li>
+                        <li><a href="#">Sensors</a></li>
+                        <li><a href="#">Captures</a></li>
+                        <li><a href="#">Page 3</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+        </div>
+    </body>
+</html>
+

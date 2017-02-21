@@ -8,22 +8,7 @@
 
 </head>
     <body>
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#">IoT Repository</a>
-                </div>
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="/solutions">Solutions</a></li>
-                    <li><a href="/things">Devices</a></li>
-                    <li><a href="#">Sensors</a></li>
-                    <li><a href="#">Captures</a></li>
-                    <li><a href="#">Page 3</a></li>
-                </ul>
-            </div>
-        </nav>
-
+        <div th:include="menu/topFragment :: topFragment"></div>
         <center>
         <table token="example" class="display" cellspacing="0" width="80%">
             <thead>
