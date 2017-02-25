@@ -5,9 +5,7 @@ import co.edu.usta.telco.iot.data.repository.SolutionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,20 +17,44 @@ public class SolutionMainController {
     private SolutionRepository solutionRepository;
 
     @RequestMapping(method = RequestMethod.GET)
-    String getAllSolutions(Model model, @PathVariable String thingId) {
-        solutionRepository.findOne(thingId);
+    String getAllSolutions(Model model) {
         List<Solution> listSolutions = solutionRepository.findAll();
 
-        model.addAttribute("captures", listSolutions);
-        return "solutions/list";
+        model.addAttribute("solutions", listSolutions);
+        model.addAttribute("solution", new Solution());
+        return "solutions/listSolutions";
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/solutions/{solutionId")
-    String editSolution(Model model, @PathVariable String solutionId) {
-        Solution solution = solutionRepository.findOne(solutionId);
+    @RequestMapping(method = RequestMethod.POST)
+    String createSolution(Model model, @ModelAttribute Solution solution) {
+        solutionRepository.save(solution);
+        List<Solution> listSolutions = solutionRepository.findAll();
 
-        model.addAttribute("solution", solution);
-        return "solutions/editPage";
+        model.addAttribute("solutions", listSolutions);
+        model.addAttribute("solution", new Solution());
+        return "solutions/listSolutions";
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/delete/{solutionId}")
+    String deleteSolution(Model model, @PathVariable String solutionId) {
+        solutionRepository.delete(solutionId);
+        List<Solution> listSolutions = solutionRepository.findAll();
+
+        model.addAttribute("solutions", listSolutions);
+        model.addAttribute("solution", new Solution());
+        return "solutions/listSolutions";
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/saveEdit/{solutionId}")
+    String saveEditSolution(Model model, @ModelAttribute Solution solution) {
+        solutionRepository.save(solution);
+        List<Solution> listSolutions = solutionRepository.findAll();
+
+        model.addAttribute("solution", listSolutions);
+        model.addAttribute("solution", new Solution());
+        return "solutions/listSolutions";
+    }
+
+
 
 }
