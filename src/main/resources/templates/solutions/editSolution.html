@@ -1,25 +1,15 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-        <title>Hello rest.js</title>
-        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css"/>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
-        <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.js"></script>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title>Edit Solution</title>
     </head>
     <body>
+        <div layout:fragment="content">
 
-        <center>
-            <img src="/banner.jpg" width="80%" height="100px" />
+            <center>
+                Edit Solution
             </center>
-        <center>
-            Edit Solution
-        </center>
 
             <form action="#" th:action="@{/solutions/saveEdit}" th:object="${solution}" method="post">
                 <div class="container-fluid" style="width:50%">
@@ -42,8 +32,7 @@
                 </table>
                 </div>
             </form>
-
-
+        </div>
     </body>
 </html>
 
