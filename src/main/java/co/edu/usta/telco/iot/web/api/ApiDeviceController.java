@@ -1,7 +1,6 @@
 package co.edu.usta.telco.iot.web.api;
 
 import co.edu.usta.telco.iot.data.model.Device;
-import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

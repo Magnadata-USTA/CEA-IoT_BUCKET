@@ -1,11 +1,11 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.thymeleaf.org/extras/dialect"
-      layout:decorate="~{layout/mainLayout}" >
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout" >
 <head>
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <title>:: Devices</title>
+    <title>Devices</title>
 </head>
 <body>
     <div layout:fragment="content">
@@ -14,9 +14,6 @@
         <div>
         <table width="100%">
             <tr>
-                <td width="10%">
-                    <div th:include="menu/menuFragment :: menuFragment"></div>
-                </td>
                 <td width="90%">
                     <div class="container-fluid" style="width:50%">
 
@@ -60,7 +57,7 @@
                 </td>
             </tr>
         </table>
-        </div >
+        </div>
     </div>
 </body>
 </html>

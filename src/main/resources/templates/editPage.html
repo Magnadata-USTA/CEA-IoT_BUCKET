@@ -21,21 +21,21 @@
             Hello, Welcome to the template page
         </center>
 
-            <form action="#" th:action="@{/things/saveEdit}" th:object="${thing}" method="post">
+            <form action="#" th:action="@{/devices/saveEdit}" th:object="${device}" method="post">
                 <div class="container-fluid" style="width:50%">
                 <table token="submit" class="display" cellspacing="0">
                     <tbody>
                     <tr>
                         <td>
-                            <p> Edit thing: </p>
+                            <p> Edit Device: </p>
                         </td>
 
                         <td>
-                            <p> <input type="hidden" th:field="*{token}" /> </p>
+                            <p> <input type="hidden" th:field="*{id}" /> </p>
                         </td>
 
                         <td>
-                            <p> Name <input type="text" th:field="*{password}" /> <input type="submit" /> </p>
+                            <p> Name <input type="text" th:field="*{name}" /> <input type="submit" /> </p>
                         </td>
                     </tr>
                     </tbody>

@@ -26,7 +26,7 @@ public class DeviceMainController {
 
         model.addAttribute("devices", listDevices );
         model.addAttribute("device", new Device());
-        return "thingsPage";
+        return "devicesPage";
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -34,19 +34,19 @@ public class DeviceMainController {
         deviceRepository.save(device);
 
         List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("things", listThings);
-        model.addAttribute("thing", new Device());
+        model.addAttribute("devices", listThings);
+        model.addAttribute("device", new Device());
 
-        return "thingsPage";
+        return "devicesPage";
     }
 
     @RequestMapping(path = "/delete/{thingId}", method = RequestMethod.GET)
     String createThing(@PathVariable String thingId, Model model) {
         deviceRepository.delete(thingId);
         List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("things", listThings);
-        model.addAttribute("thing", new Device());
-        return "thingsPage";
+        model.addAttribute("devices", listThings);
+        model.addAttribute("device", new Device());
+        return "devicesPage";
     }
 
     @RequestMapping(path = "/edit/{thingId}", method = RequestMethod.GET)
@@ -62,9 +62,9 @@ public class DeviceMainController {
 
         deviceRepository.save(thing);
         List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("things", listThings);
-        model.addAttribute("thing", new Device());
-        return "thingsPage";
+        model.addAttribute("devices", listThings);
+        model.addAttribute("device", new Device());
+        return "devicesPage";
     }
 
 }

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-// @RequestMapping("/sensors")
+@RequestMapping("/api/sensors")
 public class ApiSensorController {
 
     @Autowired
@@ -42,7 +42,6 @@ public class ApiSensorController {
 //        deviceRepository.findOne(capture.getDeviceId()).addCapture(capture);
         Device thing = deviceRepository.findOne(capture.getDeviceId());
 //        thing.setCaptures(captureRepository.findByDeviceId(capture.getDeviceId()));
-        System.out.println(thing.getId());
         //thing.addCapture(capture);
         return new ResponseEntity(HttpStatus.CREATED);
     }
