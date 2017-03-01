@@ -11,7 +11,7 @@
     <div layout:fragment="content">
         <div style="padding:10px">
         </div>
-        <div th:text="${errorMessage}" class="alert alert-danger" role="alert">
+        <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger" role="alert">
         </div>
         <div>
         <table width="100%">
