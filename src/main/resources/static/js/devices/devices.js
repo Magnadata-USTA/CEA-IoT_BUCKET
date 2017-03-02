@@ -8,6 +8,6 @@ $(document).ready(
 );
 
 function sendAjaxRequest(){
-    var solutionValue = $("#combobox-solutions").val();}
+    var solutionValue = $("#combobox-solutions").val();
      location.href = '/solutions/' + solutionValue + "/devices";
 };
