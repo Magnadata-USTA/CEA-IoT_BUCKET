@@ -1,6 +1,8 @@
 package co.edu.usta.telco.iot.web;
 
+import co.edu.usta.telco.iot.data.model.Capture;
 import co.edu.usta.telco.iot.data.model.Device;
+import co.edu.usta.telco.iot.data.model.Sensor;
 import co.edu.usta.telco.iot.data.model.Solution;
 import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
@@ -33,19 +35,41 @@ public class CaptureMainController {
     @RequestMapping(value = {"/sensors/captures"}, method = RequestMethod.GET)
     String getAllModel(Model model, @RequestParam(required = false) String solutionId,
                                @RequestParam(required = false) String deviceId, @RequestParam(required = false) String sensorId) {
+        // Filtering logic
         List<Device> listDevices = Collections.emptyList();
+        List<Sensor> listSensors = Collections.emptyList();
+        List<Capture> listCaptures = Collections.emptyList();
         Solution chosenSolution = new Solution();
-        Device device = new Device();
+        Device chosenDevice = new Device();
+        Sensor chosenSensor = new Sensor();
+
+        Capture capture = new Capture();
         if (StringUtils.isNotEmpty(solutionId)) {
             listDevices = deviceRepository.findBySolutionId(solutionId);
             chosenSolution = solutionRepository.findOne(solutionId);
-            device.setSolutionId(solutionId);
         }
+
+        if (StringUtils.isNotEmpty(deviceId)) {
+            chosenDevice = deviceRepository.findOne(deviceId);
+            listSensors = sensorRepository.findByDeviceId(deviceId);
+        }
+
+        if (StringUtils.isNotEmpty(sensorId)) {
+            chosenSensor = sensorRepository.findOne(sensorId);
+            listCaptures = captureRepository.findBySensorId(sensorId);
+            capture.setSensorId(sensorId);
+        }
+
         List<Solution> listSolutions = solutionRepository.findAll();
         model.addAttribute("chosenSolution", chosenSolution);
+        model.addAttribute("chosenDevice", chosenDevice);
+        model.addAttribute("chosenSensor", chosenSensor);
         model.addAttribute("solutions", listSolutions );
         model.addAttribute("devices", listDevices );
-        model.addAttribute("device", device);
+        model.addAttribute("sensors", listSensors );
+        model.addAttribute("captures", listCaptures );
+        model.addAttribute("capture", capture);
+
         return "captures/listCaptures";
     }
 

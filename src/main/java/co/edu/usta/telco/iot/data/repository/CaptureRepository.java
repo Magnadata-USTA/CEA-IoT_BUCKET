@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface CaptureRepository extends MongoRepository<Capture, String>{
     List<Capture> findAll();
-    List<Capture> findByDeviceId(String deviceId);
+    List<Capture> findBySensorId(String sensorId);
 
 }
