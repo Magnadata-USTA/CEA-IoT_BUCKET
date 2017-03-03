@@ -2,16 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorator="layout/mainLayout" >
 <head>
-    <script language="JavaScript" src="/js/devices/devices.js" />
+    <script language="JavaScript" src="/js/sensors/sensors.js" />
 
     <title>Sensors</title>
 </head>
 <body>
 
-    <div layout:fragment="content">
-        <div style="padding:10px">
-        </div>
-        <div>
+<div layout:fragment="content">
+    <div style="padding:10px">
+    </div>
+    <div>
         <table width="100%">
             <tr>
                 <td width="90%">
@@ -22,7 +22,14 @@
                             <label>Select solution: </label>
                             <select id="combobox-solutions" th:field="${chosenSolution.id}" >
                                 <option value="">Select one...</option>
-                                <option th:each="p : ${solutions}" th:value="${p.id}"  th:text="${p.name}"  ></option>
+                                <option th:each="solution : ${solutions}" th:value="${solution.id}"  th:text="${solution.name}"  ></option>
+                            </select>
+                        </div>
+                        <div class="ui-widget">
+                            <label>Select device: </label>
+                            <select id="combobox-devices" th:field="${chosenDevice.id}" >
+                                <option value="">Select one...</option>
+                                <option th:each="device : ${devices}" th:value="${device.id}"  th:text="${device.name}"  ></option>
                             </select>
                         </div>
 
@@ -36,28 +43,33 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="singleDevice : ${devices}">
-                                <td><a th:href="@{'/solutions/'+ ${device.solutionId} + '/devices/delete/'+ ${singleDevice.id} }"><i class="fa fa-trash-o fa-fw"></i></a>
+                            <tr th:each="singleSensor : ${sensors}">
+                                <td><a th:href="@{'/devices/'+ ${sensor.deviceId} + '/sensors/delete/'+ ${singleSensor.id} }"><i class="fa fa-trash-o fa-fw"></i></a>
                                 </td>
-                                <td><a th:href="@{'/solutions/'+ ${device.solutionId} + '/devices/edit/'+ ${singleDevice.id} }"><i class="fa fa-pencil fa-fw"></i></a>
+                                <td><a th:href="@{'/devices/'+ ${sensor.deviceId} + '/sensors/edit/'+ ${singleSensor.id} }"><i class="fa fa-pencil fa-fw"></i></a>
                                 </td>
-                                <td><p th:text="${singleDevice.id}"/></td>
-                                <td><p th:text="${singleDevice.name}"/></td>
+                                <td><p th:text="${singleSensor.id}"/></td>
+                                <td><p th:text="${singleSensor.name}"/></td>
                             </tr>
                             </tbody>
                         </table>
 
                     </div>
-                    <form action="#" th:action="@{'/solutions/'+ ${device.solutionId} + '/devices'}" th:object="${device}" method="post">
+
+                    <div th:unless="${sensor.deviceId}" style="text-align:center" >
+                        <div th:text="#{message.sensors.pleaseSelectDevice}"></div>
+                    </div>
+
+                    <form action="#" th:if="${sensor.deviceId}" th:action="@{'/devices/'+ ${sensor.deviceId} + '/sensors'}" th:object="${sensor}" method="post">
 
                         <div class="container-fluid" style="width:50%">
                             <div class="panel panel-default">
-                                <div class="panel-heading">Create Device</div>
+                                <div class="panel-heading">Create Sensor</div>
                                 <div class="panel-body">
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Name</span>
                                         <input type="text" class="form-control" th:field="*{name}" placeholder="Name" aria-describedby="basic-addon1"/>
-                                        <input id="solutionId" type="hidden" th:field="*{solutionId}" />
+                                        <input id="deviceId" type="hidden" th:field="*{deviceId}" />
                                     </div>
                                     <button type="submit" class="btn btn-default">Submit</button>
                                 </div>
@@ -67,9 +79,8 @@
                 </td>
             </tr>
         </table>
-        </div>
     </div>
+</div>
 </body>
 
 </html>
-

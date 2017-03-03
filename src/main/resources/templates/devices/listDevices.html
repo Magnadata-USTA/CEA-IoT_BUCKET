@@ -48,7 +48,10 @@
                         </table>
 
                     </div>
-                    <form action="#" th:action="@{'/solutions/'+ ${device.solutionId} + '/devices'}" th:object="${device}" method="post">
+                    <div th:unless="${device.solutionId}">
+                        <div th:text="#{message.devices.pleaseSelectSolution}"></div>
+                    </div>
+                    <form th:if="${device.solutionId}" action="#" th:action="@{'/solutions/'+ ${device.solutionId} + '/devices'}" th:object="${device}" method="post">
 
                         <div class="container-fluid" style="width:50%">
                             <div class="panel panel-default">

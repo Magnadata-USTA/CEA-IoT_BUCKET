@@ -55,7 +55,12 @@
                             </table>
 
                         </div>
-                        <form action="#" th:action="@{'/devices/'+ ${sensor.deviceId} + '/sensors'}" th:object="${sensor}" method="post">
+
+                        <div th:unless="${sensor.deviceId}" style="text-align:center" >
+                            <div th:text="#{message.sensors.pleaseSelectDevice}"></div>
+                        </div>
+
+                        <form action="#" th:if="${sensor.deviceId}" th:action="@{'/devices/'+ ${sensor.deviceId} + '/sensors'}" th:object="${sensor}" method="post">
 
                             <div class="container-fluid" style="width:50%">
                                 <div class="panel panel-default">

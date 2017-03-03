@@ -10,10 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -33,8 +30,9 @@ public class CaptureMainController {
     @Autowired
     private CaptureRepository captureRepository;
 
-    @RequestMapping(value = {"/sensors/captures","/sensors/{deviceId}/captures"}, method = RequestMethod.GET)
-    String getAllModel(Model model, @PathVariable(required = false) String solutionId) {
+    @RequestMapping(value = {"/sensors/captures"}, method = RequestMethod.GET)
+    String getAllModel(Model model, @RequestParam(required = false) String solutionId,
+                               @RequestParam(required = false) String deviceId, @RequestParam(required = false) String sensorId) {
         List<Device> listDevices = Collections.emptyList();
         Solution chosenSolution = new Solution();
         Device device = new Device();
@@ -48,7 +46,7 @@ public class CaptureMainController {
         model.addAttribute("solutions", listSolutions );
         model.addAttribute("devices", listDevices );
         model.addAttribute("device", device);
-        return "devices/listDevices";
+        return "captures/listCaptures";
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/sensors/{deviceId}/captures")
@@ -60,7 +58,7 @@ public class CaptureMainController {
         model.addAttribute("device", new Device());
         Solution chosenSolution = solutionRepository.findOne(solutionId);
 
-        return getAllModel(model, solutionId);
+        return getAllModel(model, solutionId, null, null);
     }
 
     @RequestMapping(path = "/sensors/{deviceId}/captures/delete/{deviceId}", method = RequestMethod.GET)
@@ -69,20 +67,20 @@ public class CaptureMainController {
         List<Device> listThings = deviceRepository.findAll();
         model.addAttribute("devices", listThings);
         model.addAttribute("device", new Device());
-        return getAllModel(model, solutionId);
+        return getAllModel(model, solutionId, null, null);
     }
 
     @RequestMapping(path = "/sensors/{deviceId}/captures/edit/{deviceId}", method = RequestMethod.GET)
     String edit(@PathVariable String deviceId, Model model) {
         Device device = deviceRepository.findOne(deviceId);
         model.addAttribute("device", device);
-        return "devices/editDevice";
+        return "captures/editCapture";
     }
 
     @RequestMapping(path = "/sensors/{deviceId}/captures/saveEdit", method = RequestMethod.POST)
     String saveEdit(@ModelAttribute Device device, Model model) {
         deviceRepository.save(device);
-        return getAllModel(model, device.getSolutionId());
+        return getAllModel(model, device.getSolutionId(), null, null);
     }
 
 }
