@@ -1,24 +1,12 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-        <title>Hello rest.js</title>
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.css"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title>Edit sensor</title>
     </head>
     <body>
-
-        <center>
-            <img src="/banner.jpg" width="80%" height="100px" />
-            </center>
-        <center>
-            Hello, Welcome to the template page
-        </center>
-
-            <form action="#" th:action="@{/devices/saveEdit}" th:object="${device}" method="post">
+        <div layout:fragment="content">
+            <form action="#" th:action="@{'/solutions/'+ ${device.solutionId} + '/devices/saveEdit' }" th:object="${device}" method="post">
                 <div class="container-fluid" style="width:50%">
                 <table token="submit" class="display" cellspacing="0">
                     <tbody>
@@ -39,7 +27,7 @@
                 </table>
                 </div>
             </form>
-
+        </div>
 
     </body>
 </html>
