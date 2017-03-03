@@ -42,7 +42,7 @@ public class SolutionMainController {
 
     @RequestMapping(method = RequestMethod.GET, value = "/delete/{solutionId}")
     String deleteSolution(Model model, @PathVariable String solutionId, RedirectAttributes redirectAttributes) {
-        if(StringUtils.isEmpty(solutionId)) return addSolutionSimpleError("Empty id for edit", model, redirectAttributes);
+        if(StringUtils.isEmpty(solutionId)) return addSolutionSimpleError("Empty id for delete", model);
         solutionRepository.delete(solutionId);
         List<Solution> listSolutions = solutionRepository.findAll();
 
@@ -53,7 +53,7 @@ public class SolutionMainController {
 
     @RequestMapping(path = "/edit/{solutionId}", method = RequestMethod.GET)
     String editSolution(@PathVariable String solutionId, Model model, RedirectAttributes redirectAttributes) {
-        if (StringUtils.isEmpty(solutionId)) return addSolutionSimpleError("Empty id for edit", model, redirectAttributes);
+        if (StringUtils.isEmpty(solutionId)) return addSolutionSimpleError("Empty id for edit", model);
         Solution solution = solutionRepository.findOne(solutionId);
         model.addAttribute("solution", solution);
         return "solutions/editSolution";
@@ -69,8 +69,8 @@ public class SolutionMainController {
         return "solutions/listSolutions";
     }
 
-    private String addSolutionSimpleError(String error, Model model, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("errorMessage", error);
+    private String addSolutionSimpleError(String error, Model model) {
+        model.addAttribute("errorMessage", error);
         return getAllSolutions(model);
     }
 

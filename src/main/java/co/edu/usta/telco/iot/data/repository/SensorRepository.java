@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface SensorRepository extends MongoRepository<Sensor, String>{
     List<Sensor> findAll();
+    List<Sensor> findByDeviceId(String id);
 }
