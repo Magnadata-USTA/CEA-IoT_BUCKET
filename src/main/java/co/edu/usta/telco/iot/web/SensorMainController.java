@@ -72,37 +72,38 @@ public class SensorMainController {
 */
 
     @RequestMapping(method = RequestMethod.POST, value = "/devices/{deviceId}/sensors")
-    String create(@ModelAttribute Device device, Model model, @PathVariable(required = false) String solutionId) {
-        deviceRepository.save(device);
+    String create(@ModelAttribute Sensor sensor, Model model, @PathVariable(required = false) String solutionId) {
+        sensorRepository.save(sensor);
 
         List<Device> listThings = deviceRepository.findAll();
         model.addAttribute("devices", listThings);
         model.addAttribute("device", new Device());
-        Solution chosenSolution = solutionRepository.findOne(solutionId);
 
-        return getAllModelFiltered(model, solutionId, null);
+        return getAllModelFiltered(model, solutionId, sensor.getDeviceId());
     }
 
-    @RequestMapping(path = "/devices/{deviceId}/sensors/delete/{deviceId}", method = RequestMethod.GET)
-    String delete(@PathVariable String solutionId, @PathVariable String deviceId, Model model) {
-        deviceRepository.delete(deviceId);
+    @RequestMapping(path = "/devices/{deviceId}/sensors/delete/{sensorId}", method = RequestMethod.GET)
+    String delete(@PathVariable String deviceId, @PathVariable String sensorId, Model model) {
+        deviceRepository.delete(sensorId);
         List<Device> listThings = deviceRepository.findAll();
+        Device linkedDevice = deviceRepository.findOne(deviceId);
         model.addAttribute("devices", listThings);
         model.addAttribute("device", new Device());
-        return getAllModelFiltered(model, null , deviceId);
+        return getAllModelFiltered(model, linkedDevice.getSolutionId(), deviceId);
     }
 
-    @RequestMapping(path = "/devices/{deviceId}/sensors/edit/{deviceId}", method = RequestMethod.GET)
-    String edit(@PathVariable String deviceId, Model model) {
-        Device device = deviceRepository.findOne(deviceId);
-        model.addAttribute("device", device);
+    @RequestMapping(path = "/devices/{deviceId}/sensors/edit/{sensorId}", method = RequestMethod.GET)
+    String edit(@PathVariable String deviceId, @PathVariable String sensorId, Model model) {
+        Sensor sensor = sensorRepository.findOne(sensorId);
+        model.addAttribute("sensor", sensor);
         return "sensors/editSensor";
     }
 
     @RequestMapping(path = "/devices/{deviceId}/sensors/saveEdit", method = RequestMethod.POST)
-    String saveEdit(@ModelAttribute Device device, Model model) {
-        deviceRepository.save(device);
-        return getAllModelFiltered(model, null, device.getId());
+    String saveEdit(@ModelAttribute Sensor sensor, Model model) {
+        Device linkedDevice = deviceRepository.findOne(sensor.getDeviceId());
+        sensorRepository.save(sensor);
+        return getAllModelFiltered(model, linkedDevice.getSolutionId(), sensor.getDeviceId());
     }
 
 }
