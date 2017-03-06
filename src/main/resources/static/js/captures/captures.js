@@ -18,6 +18,6 @@ function sendAjaxRequest(){
     var deviceValue = $("#combobox-devices").val();
     var sensorValue = $("#combobox-sensors").val();
      location.href = '/sensors/captures?solutionId=' +  solutionValue + '&deviceId=' + deviceValue +
-                    'sensorId=' + sensorValue;
+                    '&sensorId=' + sensorValue;
 };
 

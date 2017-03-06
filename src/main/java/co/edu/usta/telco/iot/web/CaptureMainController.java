@@ -14,7 +14,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -73,16 +76,18 @@ public class CaptureMainController {
         return "captures/listCaptures";
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/sensors/{deviceId}/captures")
-    String create(@ModelAttribute Device device, Model model, @PathVariable(required = false) String solutionId) {
-        deviceRepository.save(device);
+    @RequestMapping(method = RequestMethod.POST, value = "/sensors/{sensorId}/captures")
+    String create(@ModelAttribute Capture capture, Model model, @PathVariable(required = false) String sensorId) {
+        capture.setCaptureDate(new Date());
+        captureRepository.save(capture);
 
-        List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("devices", listThings);
-        model.addAttribute("device", new Device());
-        Solution chosenSolution = solutionRepository.findOne(solutionId);
+        Sensor linkedSensor = sensorRepository.findOne(sensorId);
+        Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
+        List<Capture> listCaptures = captureRepository.findAll();
+        model.addAttribute("captures", listCaptures);
+        model.addAttribute("capture", new Capture());
 
-        return getAllModel(model, solutionId, null, null);
+        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId);
     }
 
     @RequestMapping(path = "/sensors/{deviceId}/captures/delete/{deviceId}", method = RequestMethod.GET)
