@@ -102,17 +102,19 @@ public class CaptureMainController {
         return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId);
     }
 
-    @RequestMapping(path = "/sensors/{deviceId}/captures/edit/{deviceId}", method = RequestMethod.GET)
-    String edit(@PathVariable String deviceId, Model model) {
-        Device device = deviceRepository.findOne(deviceId);
-        model.addAttribute("device", device);
+    @RequestMapping(path = "/sensors/{sensorId}/captures/edit/{captureId}", method = RequestMethod.GET)
+    String edit(@PathVariable String captureId, Model model) {
+        Capture capture = captureRepository.findOne(captureId);
+        model.addAttribute("capture", capture);
         return "captures/editCapture";
     }
 
-    @RequestMapping(path = "/sensors/{deviceId}/captures/saveEdit", method = RequestMethod.POST)
-    String saveEdit(@ModelAttribute Device device, Model model) {
-        deviceRepository.save(device);
-        return getAllModel(model, device.getSolutionId(), null, null);
+    @RequestMapping(path = "/sensors/{sensorId}/captures/saveEdit", method = RequestMethod.POST)
+    String saveEdit(@ModelAttribute Capture capture, Model model) {
+        Sensor linkedSensor = sensorRepository.findOne(capture.getSensorId());
+        Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
+        captureRepository.save(capture);
+        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), capture.getSensorId());
     }
 
 }

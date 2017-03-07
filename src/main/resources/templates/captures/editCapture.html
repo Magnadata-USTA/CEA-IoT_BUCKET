@@ -6,13 +6,13 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <form action="#" th:action="@{'/devices/'+ ${sensor.deviceId} + '/sensors/saveEdit' }" th:object="${sensor}" method="post">
+    <form action="#" th:action="@{'/sensors/'+ ${capture.sensorId} + '/captures/saveEdit' }" th:object="${capture}" method="post">
         <div class="container-fluid" style="width:50%">
             <table token="submit" class="display" cellspacing="0">
                 <tbody>
                 <tr>
                     <td>
-                        <p> Edit Device: </p>
+                        <p> Edit Capture: </p>
                     </td>
 
                     <td>
@@ -20,7 +20,11 @@
                     </td>
 
                     <td>
-                        <p> Name <input type="text" th:field="*{name}" /> <input type="submit" /> </p>
+                        <p> Capture type <input type="text" th:field="*{captureTypeName}" /> <input type="submit" /> </p>
+                    </td>
+
+                    <td>
+                        <p> Name <input type="text" th:field="*{value}" /> <input type="submit" /> </p>
                     </td>
                 </tr>
                 </tbody>
