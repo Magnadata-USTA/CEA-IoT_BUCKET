@@ -90,13 +90,16 @@ public class CaptureMainController {
         return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId);
     }
 
-    @RequestMapping(path = "/sensors/{deviceId}/captures/delete/{deviceId}", method = RequestMethod.GET)
-    String delete(@PathVariable String solutionId, @PathVariable String deviceId, Model model) {
-        deviceRepository.delete(deviceId);
-        List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("devices", listThings);
-        model.addAttribute("device", new Device());
-        return getAllModel(model, solutionId, null, null);
+    @RequestMapping(path = "/sensors/{sensorId}/captures/delete/{captureId}", method = RequestMethod.GET)
+    String delete(@PathVariable String sensorId, @PathVariable String captureId, Model model) {
+        captureRepository.delete(captureId);
+
+        Sensor linkedSensor = sensorRepository.findOne(sensorId);
+        Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
+        List<Capture> listCaptures = captureRepository.findAll();
+        model.addAttribute("captures", listCaptures);
+        model.addAttribute("capture", new Capture());
+        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId);
     }
 
     @RequestMapping(path = "/sensors/{deviceId}/captures/edit/{deviceId}", method = RequestMethod.GET)
