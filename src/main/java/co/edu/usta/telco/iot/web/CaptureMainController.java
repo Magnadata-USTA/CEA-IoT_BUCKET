@@ -1,6 +1,8 @@
 package co.edu.usta.telco.iot.web;
 
+import co.edu.usta.telco.iot.data.model.Capture;
 import co.edu.usta.telco.iot.data.model.Device;
+import co.edu.usta.telco.iot.data.model.Sensor;
 import co.edu.usta.telco.iot.data.model.Solution;
 import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
@@ -10,12 +12,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -33,56 +35,86 @@ public class CaptureMainController {
     @Autowired
     private CaptureRepository captureRepository;
 
-    @RequestMapping(value = {"/sensors/captures","/sensors/{deviceId}/captures"}, method = RequestMethod.GET)
-    String getAllModel(Model model, @PathVariable(required = false) String solutionId) {
+    @RequestMapping(value = {"/sensors/captures"}, method = RequestMethod.GET)
+    String getAllModel(Model model, @RequestParam(required = false) String solutionId,
+                               @RequestParam(required = false) String deviceId, @RequestParam(required = false) String sensorId) {
+        // Filtering logic
         List<Device> listDevices = Collections.emptyList();
+        List<Sensor> listSensors = Collections.emptyList();
+        List<Capture> listCaptures = Collections.emptyList();
         Solution chosenSolution = new Solution();
-        Device device = new Device();
+        Device chosenDevice = new Device();
+        Sensor chosenSensor = new Sensor();
+
+        Capture capture = new Capture();
         if (StringUtils.isNotEmpty(solutionId)) {
             listDevices = deviceRepository.findBySolutionId(solutionId);
             chosenSolution = solutionRepository.findOne(solutionId);
-            device.setSolutionId(solutionId);
         }
+
+        if (StringUtils.isNotEmpty(deviceId)) {
+            chosenDevice = deviceRepository.findOne(deviceId);
+            listSensors = sensorRepository.findByDeviceId(deviceId);
+        }
+
+        if (StringUtils.isNotEmpty(sensorId)) {
+            chosenSensor = sensorRepository.findOne(sensorId);
+            listCaptures = captureRepository.findBySensorId(sensorId);
+            capture.setSensorId(sensorId);
+        }
+
         List<Solution> listSolutions = solutionRepository.findAll();
         model.addAttribute("chosenSolution", chosenSolution);
+        model.addAttribute("chosenDevice", chosenDevice);
+        model.addAttribute("chosenSensor", chosenSensor);
         model.addAttribute("solutions", listSolutions );
         model.addAttribute("devices", listDevices );
-        model.addAttribute("device", device);
-        return "devices/listDevices";
+        model.addAttribute("sensors", listSensors );
+        model.addAttribute("captures", listCaptures );
+        model.addAttribute("capture", capture);
+
+        return "captures/listCaptures";
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/sensors/{deviceId}/captures")
-    String create(@ModelAttribute Device device, Model model, @PathVariable(required = false) String solutionId) {
-        deviceRepository.save(device);
+    @RequestMapping(method = RequestMethod.POST, value = "/sensors/{sensorId}/captures")
+    String create(@ModelAttribute Capture capture, Model model, @PathVariable(required = false) String sensorId) {
+        capture.setCaptureDate(new Date());
+        captureRepository.save(capture);
 
-        List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("devices", listThings);
-        model.addAttribute("device", new Device());
-        Solution chosenSolution = solutionRepository.findOne(solutionId);
+        Sensor linkedSensor = sensorRepository.findOne(sensorId);
+        Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
+        List<Capture> listCaptures = captureRepository.findAll();
+        model.addAttribute("captures", listCaptures);
+        model.addAttribute("capture", new Capture());
 
-        return getAllModel(model, solutionId);
+        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId);
     }
 
-    @RequestMapping(path = "/sensors/{deviceId}/captures/delete/{deviceId}", method = RequestMethod.GET)
-    String delete(@PathVariable String solutionId, @PathVariable String deviceId, Model model) {
-        deviceRepository.delete(deviceId);
-        List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("devices", listThings);
-        model.addAttribute("device", new Device());
-        return getAllModel(model, solutionId);
+    @RequestMapping(path = "/sensors/{sensorId}/captures/delete/{captureId}", method = RequestMethod.GET)
+    String delete(@PathVariable String sensorId, @PathVariable String captureId, Model model) {
+        captureRepository.delete(captureId);
+
+        Sensor linkedSensor = sensorRepository.findOne(sensorId);
+        Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
+        List<Capture> listCaptures = captureRepository.findAll();
+        model.addAttribute("captures", listCaptures);
+        model.addAttribute("capture", new Capture());
+        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId);
     }
 
-    @RequestMapping(path = "/sensors/{deviceId}/captures/edit/{deviceId}", method = RequestMethod.GET)
-    String edit(@PathVariable String deviceId, Model model) {
-        Device device = deviceRepository.findOne(deviceId);
-        model.addAttribute("device", device);
-        return "devices/editDevice";
+    @RequestMapping(path = "/sensors/{sensorId}/captures/edit/{captureId}", method = RequestMethod.GET)
+    String edit(@PathVariable String captureId, Model model) {
+        Capture capture = captureRepository.findOne(captureId);
+        model.addAttribute("capture", capture);
+        return "captures/editCapture";
     }
 
-    @RequestMapping(path = "/sensors/{deviceId}/captures/saveEdit", method = RequestMethod.POST)
-    String saveEdit(@ModelAttribute Device device, Model model) {
-        deviceRepository.save(device);
-        return getAllModel(model, device.getSolutionId());
+    @RequestMapping(path = "/sensors/{sensorId}/captures/saveEdit", method = RequestMethod.POST)
+    String saveEdit(@ModelAttribute Capture capture, Model model) {
+        Sensor linkedSensor = sensorRepository.findOne(capture.getSensorId());
+        Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
+        captureRepository.save(capture);
+        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), capture.getSensorId());
     }
 
 }

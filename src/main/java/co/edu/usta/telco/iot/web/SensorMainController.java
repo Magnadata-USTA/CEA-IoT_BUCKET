@@ -58,19 +58,6 @@ public class SensorMainController {
         return "sensors/listSensors";
     }
 
-/*
-    @RequestMapping(value = {"/devices/sensors","/devices/{deviceId}/sensors"}, method = RequestMethod.GET)
-    String getAllModel(Model model, @PathVariable(required = false) String deviceId) {
-
-        List<Solution> listSolutions = solutionRepository.findAll();
-        model.addAttribute("chosenSolution", chosenSolution);
-        model.addAttribute("solutions", listSolutions );
-        model.addAttribute("devices", listDevices );
-        model.addAttribute("device", device);
-        return "devices/listDevices";
-    }
-*/
-
     @RequestMapping(method = RequestMethod.POST, value = "/devices/{deviceId}/sensors")
     String create(@ModelAttribute Sensor sensor, Model model, @PathVariable(required = false) String solutionId) {
         sensorRepository.save(sensor);
