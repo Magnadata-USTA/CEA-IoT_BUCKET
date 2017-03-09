@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface CaptureRepository extends MongoRepository<Capture, String>{
     List<Capture> findAll();
+    List<Capture> findAllByOrderBySaveDateDesc();
     List<Capture> findBySensorId(String sensorId);
+    List<Capture> findBySensorIdOrderBySaveDateDesc(String sensorId);
 
 }
