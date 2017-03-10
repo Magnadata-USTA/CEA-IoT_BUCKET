@@ -20,10 +20,10 @@ public class Capture implements Serializable, Persistable<String> {
     private String id;
 
     private String deviceId;
-    @JsonFormat(pattern="yyyy-MM-dd hh:mm")
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss")
     private Date captureDate;
     @CreatedDate
-    @JsonFormat(pattern="yyyy-MM-dd hh:mm")
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss")
     private Date saveDate;
     private String value;
 

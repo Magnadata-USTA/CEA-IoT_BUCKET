@@ -4,7 +4,11 @@ import co.edu.usta.telco.iot.data.model.Capture;
 import co.edu.usta.telco.iot.data.model.Sensor;
 import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.SensorRepository;
+import com.jasongoodwin.monads.Try;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,8 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/api/sensors/{sensorId}/captures")
@@ -30,9 +34,37 @@ public class ApiCaptureController {
         return new ResponseEntity<List<Capture>>(captureRepository.findAllByOrderBySaveDateDesc(), HttpStatus.OK);
     }
 
+    @RequestMapping(value="/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    ResponseEntity<List<Capture>> search(@RequestParam(required = false) String captureStartDate, @RequestParam(required = false) String captureEndDate) {
+        if (Objects.isNull(captureStartDate) || Objects.isNull(captureEndDate)) {
+            return new ResponseEntity("Error: missing date parameters",
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        Optional<Date> optionalStartDate = Try.ofFailable(() ->
+                new SimpleDateFormat(DateFormatUtils.ISO_DATE_FORMAT.getPattern()).parse(captureStartDate)
+        ).toOptional();
+
+        Optional<Date> optionalEndDate = Try.ofFailable(() ->
+                new SimpleDateFormat(DateFormatUtils.ISO_DATE_FORMAT.getPattern()).parse(captureEndDate)
+        ).toOptional();
+
+        if (BooleanUtils.isFalse(optionalStartDate.isPresent()) || BooleanUtils.isFalse(optionalEndDate.isPresent())) {
+            return new ResponseEntity("Error: Date must have the format : " + DateFormatUtils.ISO_DATE_FORMAT.getPattern(),
+                    HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<List<Capture>>(
+                captureRepository.findBetweenCaptureDates(
+                        DateUtils.truncate(optionalStartDate.get(), Calendar.DATE),
+                        DateUtils.addMilliseconds(DateUtils.ceiling(optionalEndDate.get(), Calendar.DATE) , -1) ),
+                HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{captureId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity<Capture> getThingInformation( @PathVariable String captureId) {
+    ResponseEntity<Capture> getThingInformation(@PathVariable String captureId) {
         return new ResponseEntity<Capture>(captureRepository.findOne(captureId), HttpStatus.OK);
     }
 
