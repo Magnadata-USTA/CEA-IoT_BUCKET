@@ -19,11 +19,10 @@ public class Capture implements Serializable, Persistable<String> {
     @Id
     private String id;
 
-    private String deviceId;
-    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date captureDate;
     @CreatedDate
-    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date saveDate;
     private String value;
 
@@ -39,14 +38,6 @@ public class Capture implements Serializable, Persistable<String> {
     @Override
     public boolean isNew() {
         return true;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
     }
 
     public void setId(String id) {

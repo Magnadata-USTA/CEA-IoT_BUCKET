@@ -1,7 +1,12 @@
 package co.edu.usta.telco.iot.web.api;
 
 import co.edu.usta.telco.iot.data.model.Device;
+import co.edu.usta.telco.iot.data.model.Solution;
+import co.edu.usta.telco.iot.data.model.User;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
+import co.edu.usta.telco.iot.data.repository.SolutionRepository;
+import co.edu.usta.telco.iot.data.repository.UserRepository;
+import co.edu.usta.telco.iot.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -10,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/devices")
@@ -18,10 +25,23 @@ public class ApiDeviceController {
     @Autowired
     private DeviceRepository deviceRepository;
 
+    @Autowired
+    private SolutionRepository solutionRepository;
+
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity<List<Device>> getAll() {
-        return new ResponseEntity<List<Device>>(deviceRepository.findAll(), HttpStatus.OK);
+    ResponseEntity<List<Device>> getAll(@RequestParam String userToken) {
+        User user = userService.validateToken(userToken);
+        if(Objects.isNull(user)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        List<String> listSolutionIds =  solutionRepository.findByLogin(user.getLogin()).stream().map(solution -> solution.getId()).collect(Collectors.toList());
+        List<Device> listDevices = deviceRepository.findBySolutionIdIn(listSolutionIds);
+        return new ResponseEntity<>(listDevices, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{deviceId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
