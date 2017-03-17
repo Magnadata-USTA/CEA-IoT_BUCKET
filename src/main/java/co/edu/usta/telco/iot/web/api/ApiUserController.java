@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/* Disabled
 @Controller
 @RequestMapping("/api/users")
 public class ApiUserController {
@@ -44,3 +45,4 @@ public class ApiUserController {
     }
 
 }
+*/

@@ -59,7 +59,7 @@ public class CaptureMainController {
 
         if (StringUtils.isNotEmpty(sensorId)) {
             chosenSensor = sensorRepository.findOne(sensorId);
-            listCaptures = captureRepository.findBySensorId(sensorId);
+            listCaptures = captureRepository.findBySensorIdOrderBySaveDateDesc(sensorId);
             capture.setSensorId(sensorId);
         }
 

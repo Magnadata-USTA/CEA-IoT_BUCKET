@@ -7,6 +7,7 @@ import java.util.List;
 
 /**
  */
-public interface SolutionRepository extends MongoRepository<Solution, String>{
+public interface SolutionRepository extends MongoRepository<Solution, String> {
     List<Solution> findAll();
+    List<Solution> findByLogin(String login);
 }

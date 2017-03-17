@@ -25,7 +25,6 @@ public class User implements Serializable, Persistable<String> {
 
     private boolean admin;
 
-
     public String getId() {
         return login;
     }
