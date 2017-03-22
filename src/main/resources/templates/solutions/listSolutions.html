@@ -11,15 +11,13 @@
     <div layout:fragment="content">
         <div style="padding:10px">
         </div>
-        <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger" role="alert">
-        </div>
         <div>
-        <table width="100%">
+        <table style="margin: 0px auto;">
             <tr>
-                <td width="90%">
-                    <div class="container-fluid" style="width:50%">
+                <td>
+                    <div class="container-fluid" style="margin: 0px auto;">
 
-                        <table token="example" class="table table-bordered table-striped" cellspacing="0" width="100%">
+                        <table token="example" class="table table-bordered table-striped" cellspacing="0" style="margin: 0px auto;">
                             <thead>
                             <tr>
                                 <th>Delete</th>
@@ -42,16 +40,18 @@
 
                     </div>
 
+                    <div style="padding:10px"></div>
+
                     <form action="#" th:action="@{/solutions}" th:object="${solution}" method="post">
-                        <div class="container-fluid" style="width:50%">
+                        <div class="container-fluid" >
                             <div class="panel panel-default">
                                 <div class="panel-heading">Create Solution</div>
-                                <div class="panel-body">
+                                <div class="panel-body ">
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon1">Name</span>
                                         <input type="text" class="form-control" th:field="*{name}" placeholder="Name" aria-describedby="basic-addon1"/>
                                     </div>
-                                    <button type="submit" class="btn btn-default">Submit</button>
+                                    <button type="submit" class="btn btn-default ">Submit</button>
                                 </div>
                             </div>
                         </div>

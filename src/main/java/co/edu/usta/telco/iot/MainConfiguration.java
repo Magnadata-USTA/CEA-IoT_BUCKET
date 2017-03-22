@@ -12,4 +12,5 @@ public class MainConfiguration {
         templateEngine.addDialect(new LayoutDialect());
         return templateEngine;
     }
+
 }

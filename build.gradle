@@ -42,9 +42,12 @@ dependencies {
     compile("org.springframework.data:spring-data-mongodb:1.9.8.RELEASE")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-devtools")
+    compile("org.springframework.boot:spring-boot-starter-mail")
     compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.2.1")
     compile('org.apache.commons:commons-lang3:3.0')
     compile('com.jason-goodwin:better-monads:0.4.0')
+    compile('javax.mail:mail:1.4.5')
+
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
@@ -61,8 +64,6 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
 }
-
-
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'

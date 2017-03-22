@@ -3,6 +3,7 @@ package co.edu.usta.telco.iot.service.impl;
 import co.edu.usta.telco.iot.data.model.User;
 import co.edu.usta.telco.iot.data.repository.UserRepository;
 import co.edu.usta.telco.iot.service.UserService;
+import co.edu.usta.telco.iot.util.SessionIdentifierGenerator;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +15,7 @@ import java.util.Objects;
 /**
  */
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
@@ -34,4 +35,22 @@ public class UserServiceImpl implements UserService{
         }
         return user;
     }
+
+    @Override
+    public User activateToken(User user) {
+        User foundUser = userRepository.findOne(user.getId());
+        if (StringUtils.isBlank(foundUser.getToken())) {
+            return null; // TODO: throw new exception
+        }
+        return saveNewToken(user);
+    }
+
+    @Override
+    public User saveNewToken(User user) {
+        String token = SessionIdentifierGenerator.nextSessionId();
+        User foundUser = userRepository.findOne(user.getId());
+        foundUser.setToken(token);
+        return userRepository.save(foundUser);
+    }
 }
+

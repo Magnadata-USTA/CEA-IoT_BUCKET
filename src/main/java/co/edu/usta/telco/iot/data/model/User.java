@@ -15,7 +15,8 @@ import java.util.List;
  */
 @Document
 public class User implements Serializable, Persistable<String> {
-    @Indexed(unique = true)
+
+    @Indexed(unique = true, sparse = true)
     private String token;
 
     private String password;

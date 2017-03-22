@@ -5,8 +5,9 @@ import co.edu.usta.telco.iot.data.model.Solution;
 import co.edu.usta.telco.iot.data.model.User;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
-import co.edu.usta.telco.iot.data.repository.UserRepository;
 import co.edu.usta.telco.iot.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/api/devices")
 public class ApiDeviceController {
+    private static Logger LOG = LoggerFactory.getLogger(ApiDeviceController.class);
 
     @Autowired
     private DeviceRepository deviceRepository;
@@ -46,9 +48,18 @@ public class ApiDeviceController {
 
     @RequestMapping(value = "/{deviceId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity<Device> getThingInformation(@PathVariable String deviceId) {
-        Device thing = deviceRepository.findOne(deviceId);
-        return new ResponseEntity<Device>(thing, HttpStatus.OK);
+    ResponseEntity getDeviceInformation(@PathVariable String deviceId, @RequestParam String userToken) {
+        User user = userService.validateToken(userToken);
+        if(Objects.isNull(user)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        Device device = deviceRepository.findOne(deviceId);
+        Solution solution = solutionRepository.findOne(device.getSolutionId());
+        if (solution.getLogin() != user.getLogin()) {
+            LOG.debug("The user does not have permission to the requested entity : " + device);
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(device, HttpStatus.OK);
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -59,6 +70,9 @@ public class ApiDeviceController {
         }
         if (device.getId() != null) {
             return new ResponseEntity("Entity creation doesn't take an ID", HttpStatus.BAD_REQUEST);
+        }
+        if (device.getSolutionId() != null) {
+            return new ResponseEntity("Entity needs a solutionId", HttpStatus.BAD_REQUEST);
         }
         deviceRepository.save(device);
         return new ResponseEntity(HttpStatus.CREATED);

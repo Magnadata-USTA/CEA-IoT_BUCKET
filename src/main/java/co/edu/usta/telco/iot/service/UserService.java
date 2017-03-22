@@ -7,4 +7,8 @@ import org.springframework.stereotype.Service;
  */
 public interface UserService {
     User validateToken(String token);
+
+    User activateToken(User user);
+
+    User saveNewToken(User user);
 }
