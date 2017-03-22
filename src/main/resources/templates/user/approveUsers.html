@@ -12,7 +12,12 @@
         <div style="padding:10px">
         </div>
         <div>
-            <div class="container-fluid" style="width:50%">
+
+            <div th:unless="${users}">
+                <div th:text="#{message.users.noUsersToApprove}"></div>
+            </div>
+
+            <div th:if="${users}" class="container-fluid" style="width:50%" >
                     <div class="container-fluid" style="margin: 0px auto;">
                         <table token="example" class="table table-bordered table-striped" cellspacing="0" style="margin: 0px auto;">
                             <thead>
@@ -24,13 +29,13 @@
                             <tbody>
                             <tr th:each="user : ${users}">
                                 <td>
-                                    <a th:href="@{'/register/approve/'+ ${user.id}}">
+                                    <a th:href="@{'/register/saveApprove/?id='+ ${user.id}}">
                                         <button type="button" class="btn btn-default" aria-label="Activate">
                                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                         </button>
                                     </a>
                                 </td>
-                                <td><p th:text="${user.email}"/>
+                                <td><p th:text="${user.login}"/>
                                 </td>
                             </tr>
                             </tbody>

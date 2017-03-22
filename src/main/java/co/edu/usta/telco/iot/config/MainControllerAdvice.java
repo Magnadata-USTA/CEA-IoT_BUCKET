@@ -17,7 +17,7 @@ public class MainControllerAdvice {
     @ExceptionHandler({org.springframework.http.converter.HttpMessageNotReadableException.class, NoHandlerFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleNotFoundException() {
-        return "error";
+        return "error/error";
     }
 
 }

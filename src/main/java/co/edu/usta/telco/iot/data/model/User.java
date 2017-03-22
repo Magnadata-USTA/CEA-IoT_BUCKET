@@ -26,6 +26,7 @@ public class User implements Serializable, Persistable<String> {
 
     private boolean admin;
 
+    @Override
     public String getId() {
         return login;
     }

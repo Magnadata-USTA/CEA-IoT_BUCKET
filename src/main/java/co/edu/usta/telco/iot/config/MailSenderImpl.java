@@ -1,5 +1,6 @@
 package co.edu.usta.telco.iot.config;
 
+import co.edu.usta.telco.iot.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,7 +18,7 @@ public class MailSenderImpl{
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void send(String mailTo) {
+    public void send(String mailTo) throws BusinessException{
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(mail, true);
@@ -28,7 +29,7 @@ public class MailSenderImpl{
             helper.setText("Your account is in process of verification");
             javaMailSender.send(mail);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            throw new BusinessException("Error: ", e);
         }
     }
 }
