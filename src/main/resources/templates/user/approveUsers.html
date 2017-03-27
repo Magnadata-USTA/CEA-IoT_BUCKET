@@ -8,46 +8,46 @@
     <title>Approve users</title>
 </head>
 <body>
-    <div layout:fragment="content" style="margin: 0px auto;">
-        <div style="padding:10px">
-        </div>
-        <div>
+<div layout:fragment="content" style="margin: 0px auto;">
+    <div style="padding:10px">
+    </div>
+    <div>
 
-            <h5 th:if="${users.empty}">
-                <div th:text="#{message.users.noUsersToApprove}"></div>
-            </h5>
-            <div th:unless="${users.empty}" class="container-fluid" style="width:50%" >
-                    <h4>
-                        <div th:text="#{message.users.approveUsersDescription}"></div>
-                    </h4>
-                    <div class="container-fluid" style="margin: 0px auto;">
-                        <table token="example" class="table table-bordered table-striped" cellspacing="0" style="margin: 0px auto;">
-                            <thead>
-                            <tr>
-                                <th>Approve</th>
-                                <th>Email</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="user : ${users}">
-                                <td>
-                                    <form th:action="@{/register/saveApprove}" method="post" >
-                                        <input type="hidden" th:field="${user.id}" />
-                                        <button type="button" class="btn btn-default" aria-label="Activate">
-                                            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                        </button>
-                                    </form>
-                                </td>
-                                <td><p th:text="${user.login}"/>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                    </div>
+        <h5 th:if="${users.empty}">
+            <div th:text="#{message.users.noUsersToApprove}"></div>
+        </h5>
+        <div th:unless="${users.empty}" class="container-fluid" style="width:50%" >
+            <h4>
+                <div th:text="#{message.users.approveUsersDescription}"></div>
+            </h4>
+            <div class="container-fluid" style="margin: 0px auto;">
+                <table token="example" class="table table-bordered table-striped" cellspacing="0" style="margin: 0px auto;">
+                    <thead>
+                    <tr>
+                        <th>Approve</th>
+                        <th>Email</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="user : ${users}">
+                        <td>
+                            <form th:action="@{/admin/saveApprove}"  method="post" >
+                                <input type="hidden" name="id" th:value="${user.id}" />
+                                <button type="submit" class="btn btn-default" aria-label="Activate">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                </button>
+                            </form>
+                        </td>
+                        <td><p th:text="${user.login}"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
             </div>
+
         </div>
     </div>
+</div>
 </body>
 </html>
