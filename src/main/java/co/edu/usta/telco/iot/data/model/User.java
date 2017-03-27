@@ -16,6 +16,9 @@ import java.util.List;
 @Document
 public class User implements Serializable, Persistable<String> {
 
+    @Id
+    private String id;
+
     @Indexed(unique = true, sparse = true)
     private String token;
 
@@ -28,13 +31,20 @@ public class User implements Serializable, Persistable<String> {
 
     @Override
     public String getId() {
-        return login;
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     @JsonIgnore
     @Override
     public boolean isNew() {
-        return true;
+        if (id == null) {
+            return true;
+        }
+        return false;
     }
 
     public String getToken() {

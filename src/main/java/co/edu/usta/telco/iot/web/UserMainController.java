@@ -5,12 +5,16 @@ import co.edu.usta.telco.iot.data.model.User;
 import co.edu.usta.telco.iot.data.repository.UserRepository;
 import co.edu.usta.telco.iot.exception.BusinessException;
 import co.edu.usta.telco.iot.service.UserService;
+import co.edu.usta.telco.iot.util.IdentifierUtil;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Objects;
 
+@Validated
 @Controller
 public class UserMainController {
     private static final Logger LOG = LoggerFactory.getLogger(UserMainController.class);
@@ -26,10 +31,13 @@ public class UserMainController {
     private UserService userService;
 
     @Autowired
-    private UserRepository userRepository; //TODO: remove user repository
+    private UserRepository userRepository;
 
     @Autowired
     private MailSenderImpl mailSenderImpl;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     String prepareRegister(Model model) {
@@ -42,7 +50,7 @@ public class UserMainController {
             model.addAttribute("errorMessage", "Error: the email and password are required");
             return "user/register";
         }
-        if (! Objects.isNull(userRepository.findByLogin(email))){
+        if (!Objects.isNull(userRepository.findByLogin(email))) {
             model.addAttribute("errorMessage", "Error: the user already exists");
             return "user/register";
         }
@@ -53,7 +61,7 @@ public class UserMainController {
         try {
             User user = new User();
             user.setLogin(email);
-            user.setPassword(password);
+            user.setPassword(passwordEncoder.encode(password));
             userRepository.save(user);
             mailSenderImpl.send(email);
             return "redirect:/solutions";
@@ -64,20 +72,38 @@ public class UserMainController {
         }
     }
 
-    @RequestMapping(value = "/register/approve", method = RequestMethod.GET)
+    @RequestMapping(value = "/admin/approve", method = RequestMethod.GET)
     String approveList(Model model) {
         List<User> usersToApprove = userRepository.findByTokenIsNull();
         model.addAttribute("users", usersToApprove);
         return "user/approveUsers";
     }
 
-    @RequestMapping(value = "/register/saveApprove", method = RequestMethod.GET) // TODO: use POST ***
-    String approveUser(Model model, @RequestParam String id) {
-        if (! Objects.isNull(userRepository.findOne(id))){
-            model.addAttribute("errorMessage", "Error: the user already exists");
-            return "user/register";
+    @RequestMapping(value = "/admin/saveApprove", method = RequestMethod.POST)
+    String approveUser(Model model, @NotEmpty @RequestParam String id) {
+        User user = userRepository.findOne(id);
+        if (Objects.isNull(user)) {
+            model.addAttribute("errorMessage", "Error: problem approving the user");
+            LOG.error("error: user not found in database " + id);
+            return approveList(model);
         }
-        return "user/approveUsers";
+
+        if (StringUtils.isNotBlank(user.getToken())) {
+            model.addAttribute("errorMessage", "Error: problem approving the user");
+            LOG.error("error: user has already a token assigned " + id);
+            return approveList(model);
+        }
+
+        user.setToken(IdentifierUtil.nextSessionId());
+        userRepository.save(user);
+
+        return approveList(model);
     }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    String prepareLogin() {
+        return "/login";
+    }
+
 
 }

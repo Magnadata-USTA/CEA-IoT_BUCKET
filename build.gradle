@@ -43,6 +43,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-devtools")
     compile("org.springframework.boot:spring-boot-starter-mail")
+    compile("org.springframework.boot:spring-boot-starter-security")
     compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.2.1")
     compile('org.apache.commons:commons-lang3:3.0')
     compile('com.jason-goodwin:better-monads:0.4.0')

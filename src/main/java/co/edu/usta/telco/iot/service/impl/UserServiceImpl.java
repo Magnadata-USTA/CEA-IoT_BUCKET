@@ -3,7 +3,7 @@ package co.edu.usta.telco.iot.service.impl;
 import co.edu.usta.telco.iot.data.model.User;
 import co.edu.usta.telco.iot.data.repository.UserRepository;
 import co.edu.usta.telco.iot.service.UserService;
-import co.edu.usta.telco.iot.util.SessionIdentifierGenerator;
+import co.edu.usta.telco.iot.util.IdentifierUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveNewToken(User user) {
-        String token = SessionIdentifierGenerator.nextSessionId();
+        String token = IdentifierUtil.nextSessionId();
         User foundUser = userRepository.findOne(user.getId());
         foundUser.setToken(token);
         return userRepository.save(foundUser);

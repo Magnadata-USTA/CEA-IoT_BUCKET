@@ -13,11 +13,13 @@
         </div>
         <div>
 
-            <div th:unless="${users}">
+            <h5 th:if="${users.empty}">
                 <div th:text="#{message.users.noUsersToApprove}"></div>
-            </div>
-
-            <div th:if="${users}" class="container-fluid" style="width:50%" >
+            </h5>
+            <div th:unless="${users.empty}" class="container-fluid" style="width:50%" >
+                    <h4>
+                        <div th:text="#{message.users.approveUsersDescription}"></div>
+                    </h4>
                     <div class="container-fluid" style="margin: 0px auto;">
                         <table token="example" class="table table-bordered table-striped" cellspacing="0" style="margin: 0px auto;">
                             <thead>
@@ -29,11 +31,12 @@
                             <tbody>
                             <tr th:each="user : ${users}">
                                 <td>
-                                    <a th:href="@{'/register/saveApprove/?id='+ ${user.id}}">
+                                    <form th:action="@{/register/saveApprove}" method="post" >
+                                        <input type="hidden" th:field="${user.id}" />
                                         <button type="button" class="btn btn-default" aria-label="Activate">
                                             <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                         </button>
-                                    </a>
+                                    </form>
                                 </td>
                                 <td><p th:text="${user.login}"/>
                                 </td>
@@ -48,4 +51,3 @@
     </div>
 </body>
 </html>
-
