@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         webSecurity
                 .ignoring()
                 // All of Spring Security will ignore the requests
-                .antMatchers("/lib/**", "/admin/**");
+                .antMatchers("/lib/**", "/img/**", "/admin/**");
     }
 
     @Override
