@@ -63,7 +63,9 @@ public class UserMainController {
             user.setLogin(email);
             user.setPassword(passwordEncoder.encode(password));
             userRepository.save(user);
-            mailSenderImpl.send(email);
+            mailSenderImpl.send(email,
+                    "IoT repository - Account activation pending",
+                    "Your account is in process of verification");
             return "redirect:/solutions";
         } catch (BusinessException exception) {
             LOG.error(exception.getMessage(), exception);
@@ -94,9 +96,20 @@ public class UserMainController {
             return approveList(model);
         }
 
-        user.setToken(IdentifierUtil.nextSessionId());
-        userRepository.save(user);
+        try {
+            user.setToken(IdentifierUtil.nextSessionId());
+            userRepository.save(user);
+            mailSenderImpl.send(user.getLogin(),
+                    "IoT repository - Your account was verified",
+                    "Your account was verified. Your token is: " + user.getToken()
+            );
+        } catch (BusinessException e) {
+            LOG.error(e.getMessage(), e);
+            model.addAttribute("errorMessage", "Error: problem approving the user, please reload the page to validate " +
+                    "if the approval is still pending");
+            return approveList(model);
 
+        }
         return approveList(model);
     }
 
