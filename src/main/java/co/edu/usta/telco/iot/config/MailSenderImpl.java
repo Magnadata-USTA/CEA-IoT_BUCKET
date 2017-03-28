@@ -2,8 +2,10 @@ package co.edu.usta.telco.iot.config;
 
 import co.edu.usta.telco.iot.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.mail.MessagingException;
@@ -18,6 +20,7 @@ public class MailSenderImpl{
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Async
     public void send(String mailTo) throws BusinessException{
         MimeMessage mail = javaMailSender.createMimeMessage();
         try {
@@ -28,7 +31,7 @@ public class MailSenderImpl{
             helper.setSubject("IoT repository - Account activation pending");
             helper.setText("Your account is in process of verification");
             javaMailSender.send(mail);
-        } catch (MessagingException e) {
+        } catch (MessagingException | MailSendException e) {
             throw new BusinessException("Error: ", e);
         }
     }
