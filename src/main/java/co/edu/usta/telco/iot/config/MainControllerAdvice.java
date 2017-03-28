@@ -21,12 +21,5 @@ public class MainControllerAdvice {
     }
 
 
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public static class ResourceNotFoundException extends RuntimeException {
-    }
-
-    @ResponseStatus(value = HttpStatus.UNAUTHORIZED)
-    public static class UnauthorizedException extends RuntimeException {
-    }
 
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -37,7 +38,8 @@ public class CaptureMainController {
 
     @RequestMapping(value = {"/sensors/captures"}, method = RequestMethod.GET)
     String getAllModel(Model model, @RequestParam(required = false) String solutionId,
-                               @RequestParam(required = false) String deviceId, @RequestParam(required = false) String sensorId) {
+                       @RequestParam(required = false) String deviceId,
+                       @RequestParam(required = false) String sensorId, Principal principal) {
         // Filtering logic
         List<Device> listDevices = Collections.emptyList();
         List<Sensor> listSensors = Collections.emptyList();
@@ -63,7 +65,7 @@ public class CaptureMainController {
             capture.setSensorId(sensorId);
         }
 
-        List<Solution> listSolutions = solutionRepository.findAll();
+        List<Solution> listSolutions = solutionRepository.findByLogin(principal.getName());
         model.addAttribute("chosenSolution", chosenSolution);
         model.addAttribute("chosenDevice", chosenDevice);
         model.addAttribute("chosenSensor", chosenSensor);
@@ -77,21 +79,19 @@ public class CaptureMainController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/sensors/{sensorId}/captures")
-    String create(@ModelAttribute Capture capture, Model model, @PathVariable(required = false) String sensorId) {
+    String create(@ModelAttribute Capture capture, Model model,
+                  @PathVariable(required = false) String sensorId, Principal principal) {
         capture.setCaptureDate(new Date());
         captureRepository.save(capture);
 
         Sensor linkedSensor = sensorRepository.findOne(sensorId);
         Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
-        List<Capture> listCaptures = captureRepository.findAll();
-        model.addAttribute("captures", listCaptures);
-        model.addAttribute("capture", new Capture());
 
-        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId);
+        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId, principal);
     }
 
     @RequestMapping(path = "/sensors/{sensorId}/captures/delete/{captureId}", method = RequestMethod.GET)
-    String delete(@PathVariable String sensorId, @PathVariable String captureId, Model model) {
+    String delete(@PathVariable String sensorId, @PathVariable String captureId, Model model, Principal principal) {
         captureRepository.delete(captureId);
 
         Sensor linkedSensor = sensorRepository.findOne(sensorId);
@@ -99,7 +99,7 @@ public class CaptureMainController {
         List<Capture> listCaptures = captureRepository.findAll();
         model.addAttribute("captures", listCaptures);
         model.addAttribute("capture", new Capture());
-        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId);
+        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId, principal);
     }
 
     @RequestMapping(path = "/sensors/{sensorId}/captures/edit/{captureId}", method = RequestMethod.GET)
@@ -110,11 +110,12 @@ public class CaptureMainController {
     }
 
     @RequestMapping(path = "/sensors/{sensorId}/captures/saveEdit", method = RequestMethod.POST)
-    String saveEdit(@ModelAttribute Capture capture, Model model) {
+    String saveEdit(@ModelAttribute Capture capture, Model model, Principal principal) {
         Sensor linkedSensor = sensorRepository.findOne(capture.getSensorId());
         Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
         captureRepository.save(capture);
-        return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), capture.getSensorId());
+        return getAllModel(model, linkedDevice.getSolutionId(),
+                           linkedSensor.getDeviceId(), capture.getSensorId(), principal);
     }
 
 }

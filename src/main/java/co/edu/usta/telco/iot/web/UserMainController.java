@@ -102,7 +102,7 @@ public class UserMainController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     String prepareLogin() {
-        return "/login";
+        return "/user/login";
     }
 
 

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class DeviceMainController {
     private CaptureRepository captureRepository;
 
     @RequestMapping(value = {"/solutions/devices","/solutions/{solutionId}/devices"}, method = RequestMethod.GET)
-    String getAllModel(Model model, @PathVariable(required = false) String solutionId) {
+    String getAllModel(Model model, @PathVariable(required = false) String solutionId, Principal principal) {
         List<Device> listDevices = Collections.emptyList();
         Solution chosenSolution = new Solution();
         Device device = new Device();
@@ -39,7 +40,7 @@ public class DeviceMainController {
             chosenSolution = solutionRepository.findOne(solutionId);
             device.setSolutionId(solutionId);
         }
-        List<Solution> listSolutions = solutionRepository.findAll();
+        List<Solution> listSolutions = solutionRepository.findByLogin(principal.getName());
         model.addAttribute("chosenSolution", chosenSolution);
         model.addAttribute("solutions", listSolutions );
         model.addAttribute("devices", listDevices );
@@ -48,24 +49,15 @@ public class DeviceMainController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/solutions/{solutionId}/devices")
-    String create(@ModelAttribute Device device, Model model, @PathVariable(required = false) String solutionId) {
+    String create(@ModelAttribute Device device, Model model, @PathVariable(required = false) String solutionId, Principal principal) {
         deviceRepository.save(device);
-
-        List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("devices", listThings);
-        model.addAttribute("device", new Device());
-        Solution chosenSolution = solutionRepository.findOne(solutionId);
-
-        return getAllModel(model, solutionId);
+        return getAllModel(model, solutionId, principal);
     }
 
     @RequestMapping(path = "/solutions/{solutionId}/devices/delete/{deviceId}", method = RequestMethod.GET)
-    String delete(@PathVariable String solutionId, @PathVariable String deviceId, Model model) {
+    String delete(@PathVariable String solutionId, @PathVariable String deviceId, Model model, Principal principal) {
         deviceRepository.delete(deviceId);
-        List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("devices", listThings);
-        model.addAttribute("device", new Device());
-        return getAllModel(model, solutionId);
+        return getAllModel(model, solutionId, principal);
     }
 
     @RequestMapping(path = "/solutions/{solutionId}/devices/edit/{deviceId}", method = RequestMethod.GET)
@@ -76,9 +68,9 @@ public class DeviceMainController {
     }
 
     @RequestMapping(path = "/solutions/{solutionId}/devices/saveEdit", method = RequestMethod.POST)
-    String saveEdit(@ModelAttribute Device device, Model model) {
+    String saveEdit(@ModelAttribute Device device, Model model, Principal principal) {
         deviceRepository.save(device);
-        return getAllModel(model, device.getSolutionId());
+        return getAllModel(model, device.getSolutionId(), principal);
     }
 
 }

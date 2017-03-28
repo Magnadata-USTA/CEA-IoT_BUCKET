@@ -3,6 +3,7 @@ package co.edu.usta.telco.iot.web;
 import co.edu.usta.telco.iot.config.MainControllerAdvice;
 import co.edu.usta.telco.iot.data.model.Solution;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
+import co.edu.usta.telco.iot.exception.UnauthorizedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class SolutionMainController {
     String getAllSolutions(Model model, Principal principal) {
 
         if(Objects.isNull(principal)) {
-            throw new MainControllerAdvice.UnauthorizedException();
+            throw new UnauthorizedException();
         }
 
         List<Solution> listSolutions = solutionRepository.findByLogin(principal.getName());
@@ -39,9 +40,14 @@ public class SolutionMainController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    String createSolution(Model model, @ModelAttribute Solution solution) {
+    String createSolution(Model model, @ModelAttribute Solution solution, Principal principal) {
+        if(Objects.isNull(principal) || StringUtils.equals(solution.getLogin(), principal.getName())) {
+            throw new UnauthorizedException();
+        }
+
+        solution.setLogin(principal.getName());
         solutionRepository.save(solution);
-        List<Solution> listSolutions = solutionRepository.findAll();
+        List<Solution> listSolutions = solutionRepository.findByLogin(principal.getName());
 
         model.addAttribute("solutions", listSolutions);
         model.addAttribute("solution", new Solution());
@@ -52,7 +58,7 @@ public class SolutionMainController {
     String deleteSolution(Model model, @PathVariable String solutionId, RedirectAttributes redirectAttributes, Principal principal) {
         if(StringUtils.isEmpty(solutionId)) return addSolutionSimpleError("Empty id for delete", model, principal);
         solutionRepository.delete(solutionId);
-        List<Solution> listSolutions = solutionRepository.findAll();
+        List<Solution> listSolutions = solutionRepository.findByLogin(principal.getName());
 
         model.addAttribute("solutions", listSolutions);
         model.addAttribute("solution", new Solution());
@@ -68,9 +74,9 @@ public class SolutionMainController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/saveEdit")
-    String saveEditSolution(Model model, @ModelAttribute Solution solution) {
+    String saveEditSolution(Model model, @ModelAttribute Solution solution, Principal principal) {
         solutionRepository.save(solution);
-        List<Solution> listSolutions = solutionRepository.findAll();
+        List<Solution> listSolutions = solutionRepository.findByLogin(principal.getName());
 
         model.addAttribute("solutions", listSolutions);
         model.addAttribute("solution", new Solution());

@@ -30,8 +30,8 @@ public class ApiCaptureController {
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity<List<Capture>> getAll() {
-        return new ResponseEntity<List<Capture>>(captureRepository.findAllByOrderBySaveDateDesc(), HttpStatus.OK);
+    ResponseEntity<List<Capture>> getAll(@PathVariable String sensorId) {
+        return new ResponseEntity<List<Capture>>(captureRepository.findAllBySensorIdOrderBySaveDateDesc(sensorId), HttpStatus.OK);
     }
 
     @RequestMapping(value="/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
