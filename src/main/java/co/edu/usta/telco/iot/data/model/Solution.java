@@ -1,5 +1,6 @@
 package co.edu.usta.telco.iot.data.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.springframework.data.annotation.Id;
@@ -20,6 +21,7 @@ public class Solution implements Serializable {
 
     private String name;
 
+    @JsonIgnore
     private String login;
 
     @Transient

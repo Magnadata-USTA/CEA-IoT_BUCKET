@@ -13,6 +13,7 @@ import java.util.List;
 public interface CaptureRepository extends MongoRepository<Capture, String>{
     List<Capture> findAll();
     List<Capture> findAllByOrderBySaveDateDesc();
+    List<Capture> findAllBySensorIdOrderBySaveDateDesc(String sensorId);
     List<Capture> findBySensorId(String sensorId);
     List<Capture> findBySensorIdOrderBySaveDateDesc(String sensorId);
     @Query("{ 'captureDate' :   { $gte :  ?0, $lte :  ?1 } }")

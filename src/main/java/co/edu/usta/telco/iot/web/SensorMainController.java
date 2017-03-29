@@ -6,14 +6,17 @@ import co.edu.usta.telco.iot.data.model.Solution;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import co.edu.usta.telco.iot.data.repository.SensorRepository;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
+import co.edu.usta.telco.iot.exception.UnauthorizedException;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class SensorMainController {
@@ -29,13 +32,18 @@ public class SensorMainController {
 
     @RequestMapping(value = {"/devices/sensors"}, method = RequestMethod.GET)
     String getAllModelFiltered(Model model, @RequestParam(required = false) String solutionId,
-                               @RequestParam(required = false) String deviceId) {
+                               @RequestParam(required = false) String deviceId, Principal principal) {
         // Filtering logic
         List<Device> listDevices = Collections.emptyList();
         List<Sensor> listSensors = Collections.emptyList();
         Solution chosenSolution = new Solution();
         Device chosenDevice = new Device();
         Sensor sensor = new Sensor();
+
+        if (Objects.isNull(principal) || StringUtils.isBlank(principal.getName())) {
+            throw new UnauthorizedException();
+        }
+
         if (StringUtils.isNotEmpty(solutionId)) {
             listDevices = deviceRepository.findBySolutionId(solutionId);
             chosenSolution = solutionRepository.findOne(solutionId);
@@ -47,7 +55,7 @@ public class SensorMainController {
             sensor.setDeviceId(deviceId);
         }
 
-        List<Solution> listSolutions = solutionRepository.findAll();
+        List<Solution> listSolutions = solutionRepository.findByLogin(principal.getName());
         model.addAttribute("chosenSolution", chosenSolution);
         model.addAttribute("chosenDevice", chosenDevice);
         model.addAttribute("solutions", listSolutions );
@@ -59,24 +67,18 @@ public class SensorMainController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/devices/{deviceId}/sensors")
-    String create(@ModelAttribute Sensor sensor, Model model, @PathVariable(required = false) String solutionId) {
+    String create(@ModelAttribute Sensor sensor, Model model,
+                  @PathVariable(required = false) String solutionId, Principal principal) {
         sensorRepository.save(sensor);
-
-        List<Device> listThings = deviceRepository.findAll();
-        model.addAttribute("devices", listThings);
-        model.addAttribute("device", new Device());
-
-        return getAllModelFiltered(model, solutionId, sensor.getDeviceId());
+        return getAllModelFiltered(model, solutionId, sensor.getDeviceId(), principal);
     }
 
     @RequestMapping(path = "/devices/{deviceId}/sensors/delete/{sensorId}", method = RequestMethod.GET)
-    String delete(@PathVariable String deviceId, @PathVariable String sensorId, Model model) {
+    String delete(@PathVariable String deviceId,
+                  @PathVariable String sensorId, Model model, Principal principal) {
         deviceRepository.delete(sensorId);
-        List<Device> listThings = deviceRepository.findAll();
         Device linkedDevice = deviceRepository.findOne(deviceId);
-        model.addAttribute("devices", listThings);
-        model.addAttribute("device", new Device());
-        return getAllModelFiltered(model, linkedDevice.getSolutionId(), deviceId);
+        return getAllModelFiltered(model, linkedDevice.getSolutionId(), deviceId, principal);
     }
 
     @RequestMapping(path = "/devices/{deviceId}/sensors/edit/{sensorId}", method = RequestMethod.GET)
@@ -87,10 +89,10 @@ public class SensorMainController {
     }
 
     @RequestMapping(path = "/devices/{deviceId}/sensors/saveEdit", method = RequestMethod.POST)
-    String saveEdit(@ModelAttribute Sensor sensor, Model model) {
+    String saveEdit(@ModelAttribute Sensor sensor, Model model, Principal principal) {
         Device linkedDevice = deviceRepository.findOne(sensor.getDeviceId());
         sensorRepository.save(sensor);
-        return getAllModelFiltered(model, linkedDevice.getSolutionId(), sensor.getDeviceId());
+        return getAllModelFiltered(model, linkedDevice.getSolutionId(), sensor.getDeviceId(), principal);
     }
 
 }

@@ -11,4 +11,6 @@ import java.util.List;
 public interface UserRepository extends MongoRepository<User, String>{
     List<User> findAll();
     User findByToken(String userToken);
+    User findByLogin(String login);
+    List<User> findByTokenIsNull();
 }
