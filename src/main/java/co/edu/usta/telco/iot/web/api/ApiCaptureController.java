@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,9 @@ public class ApiCaptureController {
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     ResponseEntity<List<Capture>> getAll(@PathVariable String sensorId) {
-        return new ResponseEntity<List<Capture>>(captureRepository.findAllBySensorIdOrderBySaveDateDesc(sensorId), HttpStatus.OK);
+        return new ResponseEntity<List<Capture>>(
+                captureRepository.findAllBySensorIdOrderBySaveDateDesc(sensorId, new PageRequest(0, 20)),
+                HttpStatus.OK);
     }
 
     @RequestMapping(value="/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
