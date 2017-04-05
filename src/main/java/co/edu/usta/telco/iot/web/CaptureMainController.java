@@ -10,13 +10,12 @@ import co.edu.usta.telco.iot.data.repository.SensorRepository;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -61,7 +60,7 @@ public class CaptureMainController {
 
         if (StringUtils.isNotEmpty(sensorId)) {
             chosenSensor = sensorRepository.findOne(sensorId);
-            listCaptures = captureRepository.findBySensorIdOrderBySaveDateDesc(sensorId);
+            listCaptures = captureRepository.findBySensorIdOrderBySaveDateDesc(sensorId, new PageRequest(0, 20));
             capture.setSensorId(sensorId);
         }
 

@@ -16,7 +16,7 @@ public interface CaptureRepository extends MongoRepository<Capture, String>{
     List<Capture> findAllByOrderBySaveDateDesc();
     List<Capture> findAllBySensorIdOrderBySaveDateDesc(String sensorId, Pageable pageable);
     List<Capture> findBySensorId(String sensorId);
-    List<Capture> findBySensorIdOrderBySaveDateDesc(String sensorId);
+    List<Capture> findBySensorIdOrderBySaveDateDesc(String sensorId, Pageable pageable);
     @Query("{ 'captureDate' :   { $gte :  ?0, $lte :  ?1 } }")
     List<Capture> findBetweenCaptureDates(Date startDate, Date endDate);
 
