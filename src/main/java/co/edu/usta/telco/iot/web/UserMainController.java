@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -72,6 +73,52 @@ public class UserMainController {
             model.addAttribute("errorMessage", "Error: creating the user");
             return "user/register";
         }
+    }
+
+    @RequestMapping(value = "/register/reset-password", method = RequestMethod.GET)
+    String resetPassword(Model model, @RequestParam String key) {
+        if (StringUtils.isBlank(key)) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "/login";
+        }
+
+        User user = userRepository.findByResetKey(key);
+        model.addAttribute("key", key);
+
+        if (Objects.isNull(user) ) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "user/resetPassword";
+        }
+
+        return "user/resetPassword";
+    }
+
+    @RequestMapping(value = "/register/reset-password", method = RequestMethod.POST)
+    String saveResetPassword(Model model, @RequestParam String key, @RequestParam String password) {
+        if (StringUtils.isBlank(key)) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "user/login";
+        }
+
+        User user = userRepository.findByResetKey(key);
+
+        if (Objects.isNull(user) ) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "user/resetPassword";
+        }
+
+        if (!StringUtils.equals(user.getResetKey(), key) ) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "user/resetPassword";
+        }
+
+        user.setResetKey("");
+        user.setPassword(passwordEncoder.encode(password));
+
+        userRepository.save(user);
+        model.addAttribute("successMessage", "Success: The password was reset");
+
+        return "user/login";
     }
 
     @RequestMapping(value = "/admin/approve", method = RequestMethod.GET)

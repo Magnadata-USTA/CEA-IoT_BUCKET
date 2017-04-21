@@ -5,13 +5,11 @@
     <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <title>solutions</title>
+    <title>Login</title>
 </head>
 <body>
     <div layout:fragment="content">
         <div style="padding:10px">
-        </div>
-        <div th:if="${errorMessage}" th:text="${errorMessage}" class="alert alert-danger" role="alert">
         </div>
         <div th:if="${param.error}">
             Invalid username and password.
