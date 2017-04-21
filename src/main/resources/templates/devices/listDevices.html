@@ -48,7 +48,7 @@
                         </table>
 
                     </div>
-                    <div th:unless="${device.solutionId}">
+                    <div th:unless="${device.solutionId}" style="text-align:center">
                         <div th:text="#{message.devices.pleaseSelectSolution}"></div>
                     </div>
                     <form th:if="${device.solutionId}" action="#" th:action="@{'/solutions/'+ ${device.solutionId} + '/devices'}" th:object="${device}" method="post">
