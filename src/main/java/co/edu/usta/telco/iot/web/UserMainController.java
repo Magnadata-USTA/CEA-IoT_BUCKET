@@ -39,6 +39,11 @@ public class UserMainController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @RequestMapping(value = "/home", method = RequestMethod.GET)
+    String home(Model model) {
+        return "home";
+    }
+
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     String prepareRegister(Model model) {
         return "user/register";
@@ -63,13 +68,61 @@ public class UserMainController {
             user.setLogin(email);
             user.setPassword(passwordEncoder.encode(password));
             userRepository.save(user);
-            mailSenderImpl.send(email);
+            mailSenderImpl.send(email,
+                    "IoT repository - Account activation pending",
+                    "Your account is in process of verification");
             return "redirect:/solutions";
         } catch (BusinessException exception) {
             LOG.error(exception.getMessage(), exception);
             model.addAttribute("errorMessage", "Error: creating the user");
             return "user/register";
         }
+    }
+
+    @RequestMapping(value = "/register/reset-password", method = RequestMethod.GET)
+    String resetPassword(Model model, @RequestParam String key) {
+        if (StringUtils.isBlank(key)) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "/login";
+        }
+
+        User user = userRepository.findByResetKey(key);
+        model.addAttribute("key", key);
+
+        if (Objects.isNull(user) ) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "user/resetPassword";
+        }
+
+        return "user/resetPassword";
+    }
+
+    @RequestMapping(value = "/register/reset-password", method = RequestMethod.POST)
+    String saveResetPassword(Model model, @RequestParam String key, @RequestParam String password) {
+        if (StringUtils.isBlank(key)) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "user/login";
+        }
+
+        User user = userRepository.findByResetKey(key);
+
+        if (Objects.isNull(user) ) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "user/resetPassword";
+        }
+
+        if (!StringUtils.equals(user.getResetKey(), key) ) {
+            model.addAttribute("errorMessage", "Error: The reset key is not valid");
+            return "user/resetPassword";
+        }
+
+        user.setResetKey("");
+        user.setPassword(passwordEncoder.encode(password));
+
+        userRepository.save(user);
+        model.addAttribute("successMessage", "Success: The password was reset");
+
+        return "user/login";
     }
 
     @RequestMapping(value = "/admin/approve", method = RequestMethod.GET)
@@ -94,9 +147,20 @@ public class UserMainController {
             return approveList(model);
         }
 
-        user.setToken(IdentifierUtil.nextSessionId());
-        userRepository.save(user);
+        try {
+            user.setToken(IdentifierUtil.nextSessionId());
+            userRepository.save(user);
+            mailSenderImpl.send(user.getLogin(),
+                    "IoT repository - Your account was verified",
+                    "Your account was verified. Your token is: " + user.getToken()
+            );
+        } catch (BusinessException e) {
+            LOG.error(e.getMessage(), e);
+            model.addAttribute("errorMessage", "Error: problem approving the user, please reload the page to validate " +
+                    "if the approval is still pending");
+            return approveList(model);
 
+        }
         return approveList(model);
     }
 

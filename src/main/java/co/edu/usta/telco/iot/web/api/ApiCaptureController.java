@@ -2,14 +2,20 @@ package co.edu.usta.telco.iot.web.api;
 
 import co.edu.usta.telco.iot.data.model.Capture;
 import co.edu.usta.telco.iot.data.model.Sensor;
+import co.edu.usta.telco.iot.data.model.User;
 import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.SensorRepository;
+import co.edu.usta.telco.iot.exception.UnauthorizedException;
+import co.edu.usta.telco.iot.service.CaptureService;
+import co.edu.usta.telco.iot.service.UserService;
 import com.jasongoodwin.monads.Try;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,10 +34,18 @@ public class ApiCaptureController {
     @Autowired
     private SensorRepository sensorRepository;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private CaptureService captureService;
+
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     ResponseEntity<List<Capture>> getAll(@PathVariable String sensorId) {
-        return new ResponseEntity<List<Capture>>(captureRepository.findAllBySensorIdOrderBySaveDateDesc(sensorId), HttpStatus.OK);
+        return new ResponseEntity<List<Capture>>(
+                captureRepository.findAllBySensorIdOrderBySaveDateDesc(sensorId, new PageRequest(0, 20)),
+                HttpStatus.OK);
     }
 
     @RequestMapping(value="/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -70,7 +84,9 @@ public class ApiCaptureController {
 
     @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    ResponseEntity createCaptureInformation(@RequestBody Capture capture) {
+    ResponseEntity createCaptureInformation(@RequestBody Capture capture ,@RequestParam String userToken) {
+        User user = userService.validateToken(userToken);
+
         if (Objects.isNull(capture) || StringUtils.isEmpty(capture.getSensorId())) {
             return new ResponseEntity("Error: Field 'Sensor id' is mandatory", HttpStatus.BAD_REQUEST);
         }
@@ -78,6 +94,11 @@ public class ApiCaptureController {
         if (Objects.isNull(sensor)) {
             return new ResponseEntity("Error: Sensor not found for the given 'Sensor id'", HttpStatus.BAD_REQUEST);
         }
+
+        if (BooleanUtils.isFalse(captureService.validatePermissionsForSensor(user, sensor))){
+            throw new UnauthorizedException();
+        }
+
         captureRepository.save(capture);
         return new ResponseEntity(HttpStatus.CREATED);
     }

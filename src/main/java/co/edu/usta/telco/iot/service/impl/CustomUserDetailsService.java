@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    public static final String ROLE_USER = "USER";
-    public static final String ROLE_ADMIN = "ADMIN";
+    public static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
     @Autowired
     private UserRepository userRepository;

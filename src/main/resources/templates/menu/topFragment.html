@@ -1,14 +1,14 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Hello rest.js</title>
+        <title>Top</title>
     </head>
     <body>
         <div th:fragment="topFragment" >
             <nav class="navbar navbar-inverse">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="/">IoT Repository</a>
+                        <a class="navbar-brand" href="/home">Bucket</a>
                     </div>
                     <ul class="nav navbar-nav">
                         <li><a href="/solutions">Solutions</a></li>
@@ -16,6 +16,10 @@
                         <li><a href="/devices/sensors">Sensors</a></li>
                         <li><a href="/sensors/captures">Captures</a></li>
                     </ul>
+                    <div class="navbar-header navbar-right">
+                        <span class="sr-only" id="sr-logout" >(logout)</span>
+                        <a class="navbar-brand" href="/logout"><span class="glyphicon glyphicon-log-out"></span>Logout</a>
+                    </div>
                 </div>
             </nav>
 
