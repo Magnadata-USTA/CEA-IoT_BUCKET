@@ -35,10 +35,14 @@
   <script type="text/javascript">
     $(function () {
       var url = window.location.search.match(/url=([^&]+)/);
+      var pathArray = location.href.split( '/' );
+      var protocol = pathArray[0];
+      var host = pathArray[2];
+      var base = protocol + '//' + host;
       if (url && url.length > 1) {
-        url = decodeURIComponent(url[1]);
+          url = url[1];
       } else {
-        url = "https://localhost:8443/v2/api-docs"
+          url = base + "/v2/api-docs";
       }
 
       hljs.configure({
