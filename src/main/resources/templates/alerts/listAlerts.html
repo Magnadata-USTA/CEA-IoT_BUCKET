@@ -1,0 +1,100 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout" >
+<head>
+    <script language="JavaScript" src="/js/devices/devices.js" />
+
+    <title>Alerts</title>
+</head>
+<body>
+
+    <div layout:fragment="content">
+        <div style="padding:10px">
+        </div>
+        <div>
+        <table width="100%">
+            <tr>
+                <td width="90%">
+
+                    <div class="container-fluid" style="width:50%">
+
+                        <!--div class="ui-widget">
+                            <label>Select solution: </label>
+                            <select id="combobox-solutions" th:field="${chosenSolution.id}" >
+                                <option value="">Select one...</option>
+                                <option th:each="p : ${solutions}" th:value="${p.id}"  th:text="${p.name}"  ></option>
+                            </select>
+                        </div-->
+
+                        <table token="example" class="table table-bordered table-striped" cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                                <th>Delete</th>
+                                <th>Edit</th>
+                                <th>Id</th>
+                                <th>Name</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="singleAlert : ${alert}">
+                                <td><a th:href="@{'/solutions/'+ ${chosenDevice.solutionId} + '/devices/delete/'+ ${singleAlert.id} }"><i class="fa fa-trash-o fa-fw"></i></a>
+                                </td>
+                                <td><a th:href="@{'/solutions/'+ ${chosenDevice.solutionId} + '/devices/edit/'+ ${singleAlert.id} }"><i class="fa fa-pencil fa-fw"></i></a>
+                                </td>
+                                <td><p th:text="${singleAlert.id}"/></td>
+                                <td><p th:text="${singleAlert.name}"/></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!--div th:unless="${alert.device}" style="text-align:center">
+                        <div th:text="#{message.devices.pleaseSelectSolution}"></div>
+                    </div-->
+                    <form th:if="${alert.sensorId}" action="#" th:action="@{'/sensors/'+ ${alert.sensorId} + '/alerts'}" th:object="${alert}" method="post">
+
+                        <div class="container-fluid" style="width:50%">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Create Alert</div>
+                                <div class="panel-body">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon1">Name</span>
+                                        <input type="text" class="form-control" th:field="*{name}" placeholder="Name" aria-describedby="basic-addon1"/>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon2">Condition</span>
+                                        <input type="text" class="form-control" th:field="*{conditions}" placeholder="value > 10.0" aria-describedby="basic-addon2"/>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon3">Numeric</span>
+                                        <input type="checkbox" value="Number" placeholder="Numeric" />
+                                        <!--input type="checkbox" value="Number" class="form-control" th:field="*{dataType}" placeholder="Numeric" aria-describedby="basic-addon1"/-->
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon4">Alert Type</span>
+                                        <select id="combobox-solutions" th:field="*{alertType}" >
+                                            <option value="">POST</option>
+                                            <option value="">EMAIL</option>
+                                        </select>
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon5">Action</span>
+                                        <input type="text" class="form-control" th:field="*{actionValue}" placeholder="" aria-describedby="basic-addon5"/>
+                                        <input id="sensorId" type="hidden" th:field="*{sensorId}" />
+                                    </div>
+                                    <div class="input-group">
+                                        <button type="submit" class="btn btn-default">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </table>
+        </div>
+    </div>
+</body>
+
+</html>
+

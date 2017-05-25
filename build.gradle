@@ -46,6 +46,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-aop")
     compile("io.springfox:springfox-swagger2:2.6.1")
+    compile("org.apache.httpcomponents:httpclient:4.5.3")
 
     compile("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.2.1")
     compile('org.apache.commons:commons-lang3:3.0')

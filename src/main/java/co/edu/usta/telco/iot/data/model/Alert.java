@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  */
@@ -16,7 +17,11 @@ public class Alert implements Serializable {
 
     private String name;
 
-    private String value;
+    private String actionValue;
+
+    private List<String> conditions;
+
+    private String actionContent;
 
     private AlertType alertType;
 
@@ -38,12 +43,13 @@ public class Alert implements Serializable {
         this.name = name;
     }
 
-    public String getValue() {
-        return value;
+
+    public String getActionValue() {
+        return actionValue;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setActionValue(String actionValue) {
+        this.actionValue = actionValue;
     }
 
     public AlertType getAlertType() {
@@ -54,6 +60,15 @@ public class Alert implements Serializable {
         this.alertType = alertType;
     }
 
+
+    public String getActionContent() {
+        return actionContent;
+    }
+
+    public void setActionContent(String actionContent) {
+        this.actionContent = actionContent;
+    }
+
     public String getSensorId() {
         return sensorId;
     }
@@ -62,4 +77,11 @@ public class Alert implements Serializable {
         this.sensorId = sensorId;
     }
 
+    public List<String> getConditions() {
+        return conditions;
+    }
+
+    public void setConditions(List<String> conditions) {
+        this.conditions = conditions;
+    }
 }
