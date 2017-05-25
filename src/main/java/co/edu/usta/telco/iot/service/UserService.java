@@ -11,4 +11,7 @@ public interface UserService {
     User activateToken(User user);
 
     User saveNewToken(User user);
+
+    String getLoggedUser();
+
 }

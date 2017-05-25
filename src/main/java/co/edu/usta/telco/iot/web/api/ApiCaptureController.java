@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-@Controller
+@RestController
 @RequestMapping("/api/sensors/{sensorId}/captures")
 public class ApiCaptureController {
 
@@ -41,7 +41,6 @@ public class ApiCaptureController {
     private CaptureService captureService;
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     ResponseEntity<List<Capture>> getAll(@PathVariable String sensorId) {
         return new ResponseEntity<List<Capture>>(
                 captureRepository.findAllBySensorIdOrderBySaveDateDesc(sensorId, new PageRequest(0, 20)),
@@ -49,7 +48,6 @@ public class ApiCaptureController {
     }
 
     @RequestMapping(value="/search", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     ResponseEntity<List<Capture>> search(@RequestParam(required = false) String captureStartDate, @RequestParam(required = false) String captureEndDate) {
         if (Objects.isNull(captureStartDate) || Objects.isNull(captureEndDate)) {
             return new ResponseEntity("Error: missing date parameters",
@@ -77,13 +75,11 @@ public class ApiCaptureController {
     }
 
     @RequestMapping(value = "/{captureId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     ResponseEntity<Capture> getThingInformation(@PathVariable String captureId) {
         return new ResponseEntity<Capture>(captureRepository.findOne(captureId), HttpStatus.OK);
     }
 
     @RequestMapping( method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
     ResponseEntity createCaptureInformation(@RequestBody Capture capture ,@RequestParam String userToken) {
         User user = userService.validateToken(userToken);
 

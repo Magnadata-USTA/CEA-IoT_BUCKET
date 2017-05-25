@@ -116,7 +116,7 @@ public class UserMainController {
             return "user/resetPassword";
         }
 
-        user.setResetKey("");
+        user.setResetKey(null);
         user.setPassword(passwordEncoder.encode(password));
 
         userRepository.save(user);
