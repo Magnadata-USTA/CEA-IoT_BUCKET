@@ -16,7 +16,11 @@
             <tr>
                 <td width="90%">
 
-                    <div class="container-fluid" style="width:50%">
+                    <div class="container-fluid" style="width:60%;overflow:auto;">
+
+                        <div class="ui-widget">
+                            <h4>List of Alerts</h4>
+                        </div>
 
                         <!--div class="ui-widget">
                             <label>Select solution: </label>
@@ -26,23 +30,27 @@
                             </select>
                         </div-->
 
-                        <table token="example" class="table table-bordered table-striped" cellspacing="0" width="100%">
+                        <table  th:if="${! alerts.empty}" token="example" class="table table-bordered table-striped" cellspacing="0" width="100%">
                             <thead>
                             <tr>
                                 <th>Delete</th>
                                 <th>Edit</th>
                                 <th>Id</th>
                                 <th>Name</th>
+                                <th>Condition</th>
+                                <th>Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="singleAlert : ${alert}">
-                                <td><a th:href="@{'/solutions/'+ ${chosenDevice.solutionId} + '/devices/delete/'+ ${singleAlert.id} }"><i class="fa fa-trash-o fa-fw"></i></a>
+                            <tr th:each="singleAlert : ${alerts}">
+                                <td><a th:href="@{'/sensors/'+ ${alert.sensorId} + '/alerts/delete/'+ ${singleAlert.id} }"><i class="fa fa-trash-o fa-fw"></i></a>
                                 </td>
-                                <td><a th:href="@{'/solutions/'+ ${chosenDevice.solutionId} + '/devices/edit/'+ ${singleAlert.id} }"><i class="fa fa-pencil fa-fw"></i></a>
+                                <td><a th:href="@{'/sensors/'+ ${alert.sensorId} + '/alerts/edit/'+ ${singleAlert.id} }"><i class="fa fa-pencil fa-fw"></i></a>
                                 </td>
                                 <td><p th:text="${singleAlert.id}"/></td>
                                 <td><p th:text="${singleAlert.name}"/></td>
+                                <td><p th:text="${singleAlert.conditions}"/></td>
+                                <td><p th:text="${singleAlert.actionValue}"/></td>
                             </tr>
                             </tbody>
                         </table>
@@ -53,7 +61,7 @@
                     </div-->
                     <form th:if="${alert.sensorId}" action="#" th:action="@{'/sensors/'+ ${alert.sensorId} + '/alerts'}" th:object="${alert}" method="post">
 
-                        <div class="container-fluid" style="width:50%">
+                        <div class="container-fluid" style="width:60%">
                             <div class="panel panel-default">
                                 <div class="panel-heading">Create Alert</div>
                                 <div class="panel-body">

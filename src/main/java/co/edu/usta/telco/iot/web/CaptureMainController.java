@@ -95,8 +95,6 @@ public class CaptureMainController {
 
         Sensor linkedSensor = sensorRepository.findOne(sensorId);
         Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
-        List<Capture> listCaptures = captureRepository.findAll();
-        model.addAttribute("captures", listCaptures);
         model.addAttribute("capture", new Capture());
         return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId, principal);
     }

@@ -85,34 +85,30 @@ public class AlertMainController {
         return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId, principal);
     }
 
-    /*
-    @RequestMapping(path = "/sensors/{sensorId}/captures/delete/{captureId}", method = RequestMethod.GET)
-    String delete(@PathVariable String sensorId, @PathVariable String captureId, Model model, Principal principal) {
-        captureRepository.delete(captureId);
+    @RequestMapping(path = "/sensors/{sensorId}/alerts/delete/{alertId}", method = RequestMethod.GET)
+    String delete(@PathVariable String sensorId, @PathVariable String alertId, Model model, Principal principal) {
+        alertRepository.delete(alertId);
 
         Sensor linkedSensor = sensorRepository.findOne(sensorId);
         Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
-        List<Capture> listCaptures = captureRepository.findAll();
-        model.addAttribute("captures", listCaptures);
-        model.addAttribute("capture", new Capture());
+        model.addAttribute("alert", new Alert());
         return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId, principal);
     }
 
-    @RequestMapping(path = "/sensors/{sensorId}/captures/edit/{captureId}", method = RequestMethod.GET)
-    String edit(@PathVariable String captureId, Model model) {
-        Capture capture = captureRepository.findOne(captureId);
-        model.addAttribute("capture", capture);
-        return "captures/editCapture";
+    @RequestMapping(path = "/sensors/{sensorId}/alerts/edit/{alertId}", method = RequestMethod.GET)
+    String edit(@PathVariable String alertId, Model model) {
+        Alert alert = alertRepository.findOne(alertId);
+        model.addAttribute("alert", alert);
+        return "alerts/editAlert";
     }
 
-    @RequestMapping(path = "/sensors/{sensorId}/captures/saveEdit", method = RequestMethod.POST)
-    String saveEdit(@ModelAttribute Capture capture, Model model, Principal principal) {
-        Sensor linkedSensor = sensorRepository.findOne(capture.getSensorId());
+    @RequestMapping(path = "/sensors/{sensorId}/alerts/saveEdit", method = RequestMethod.POST)
+    String saveEdit(@ModelAttribute Alert alert, Model model, Principal principal) {
+        Sensor linkedSensor = sensorRepository.findOne(alert.getSensorId());
         Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
-        captureRepository.save(capture);
+        alertRepository.save(alert);
         return getAllModel(model, linkedDevice.getSolutionId(),
-                           linkedSensor.getDeviceId(), capture.getSensorId(), principal);
+                           linkedSensor.getDeviceId(), alert.getSensorId(), principal);
     }
-*/
 
 }
