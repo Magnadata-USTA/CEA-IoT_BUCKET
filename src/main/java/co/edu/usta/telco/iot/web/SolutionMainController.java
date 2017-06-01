@@ -1,9 +1,9 @@
 package co.edu.usta.telco.iot.web;
 
-import co.edu.usta.telco.iot.config.MainControllerAdvice;
 import co.edu.usta.telco.iot.data.model.Solution;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
 import co.edu.usta.telco.iot.exception.UnauthorizedException;
+import co.edu.usta.telco.iot.service.SolutionService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +24,9 @@ public class SolutionMainController {
 
     @Autowired
     private SolutionRepository solutionRepository;
+
+    @Autowired
+    private SolutionService solutionService;
 
     @RequestMapping(method = RequestMethod.GET)
     String getAllSolutions(Model model, Principal principal) {
@@ -75,6 +78,11 @@ public class SolutionMainController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/saveEdit")
     String saveEditSolution(Model model, @ModelAttribute Solution solution, Principal principal) {
+
+        if ( ! solutionService.validatePermissionsForSolution(principal.getName(), solution.getId()) )  return addSolutionSimpleError("Access denied", model, principal);
+
+        if ( ! StringUtils.equals(principal.getName(), solution.getLogin()) )  return addSolutionSimpleError("Operation denied", model, principal);
+
         solutionRepository.save(solution);
         List<Solution> listSolutions = solutionRepository.findByLogin(principal.getName());
 

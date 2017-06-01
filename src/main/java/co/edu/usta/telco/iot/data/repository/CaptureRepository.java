@@ -4,6 +4,8 @@ import co.edu.usta.telco.iot.data.model.Capture;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 /**
  * Created by Felipe on 29/09/2016.
  */
+@Component
 public interface CaptureRepository extends MongoRepository<Capture, String>{
     List<Capture> findAll();
     List<Capture> findAllByOrderBySaveDateDesc();

@@ -4,6 +4,8 @@
     <head>
         <script language="JavaScript" src="/js/sensors/sensors.js" />
 
+        <link href="/css/sensors/sensors.css" rel="stylesheet"/>
+
         <title>Sensors</title>
     </head>
     <body>
@@ -38,6 +40,7 @@
                                 <tr>
                                     <th>Delete</th>
                                     <th>Edit</th>
+                                    <th>Captures</th>
                                     <th>Alerts</th>
                                     <th>Id</th>
                                     <th>Name</th>
@@ -49,6 +52,7 @@
                                     </td>
                                     <td><a th:href="@{'/devices/'+ ${sensor.deviceId} + '/sensors/edit/'+ ${singleSensor.id} }"><i class="fa fa-pencil fa-fw"></i></a>
                                     </td>
+                                    <td><a th:href="@{/sensors/captures(solutionId = ${chosenSolution.id}, deviceId = ${singleSensor.deviceId}, sensorId = ${singleSensor.id})}"><i class="fa fa-exchange fa-fw"></i></a></td>
                                     <td><a th:href="@{/sensors/alerts(solutionId = ${chosenSolution.id}, deviceId = ${singleSensor.deviceId}, sensorId = ${singleSensor.id})}"><i class="fa fa-warning fa-fw"></i></a></td>
                                     <td><p th:text="${singleSensor.id}"/></td>
                                     <td><p th:text="${singleSensor.name}"/></td>
