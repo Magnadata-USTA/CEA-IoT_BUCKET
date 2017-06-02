@@ -8,17 +8,16 @@ import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import co.edu.usta.telco.iot.data.repository.SensorRepository;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
+import java.security.Principal;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 @Controller
 public class CaptureMainController {

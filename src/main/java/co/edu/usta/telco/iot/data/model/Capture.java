@@ -2,19 +2,37 @@ package co.edu.usta.telco.iot.data.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
-import java.util.Date;
-
 /**
- * Created by Felipe on 27/09/2016.
+ * Capture entity. 
+ * 
+ * @author Felipe on 27/09/2016.
+ * @version 1.0
+ * @since 1.0
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@ToString
+@EqualsAndHashCode(of = "id")
 @Document
 public class Capture implements Serializable, Persistable<String> {
+
+    /** Class serial version. */
+    private static final long serialVersionUID = -6381978135490634695L;
 
     @Id
     private String id;
@@ -30,57 +48,9 @@ public class Capture implements Serializable, Persistable<String> {
 
     private String captureTypeName;
 
-    public String getId() {
-        return id;
-    }
-
     @JsonIgnore
     @Override
     public boolean isNew() {
         return true;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public void setValue(String value) {
-        this.value = value;
-    }
-
-    public Date getCaptureDate() {
-        return captureDate;
-    }
-
-    public void setCaptureDate(Date captureDate) {
-        this.captureDate = captureDate;
-    }
-
-    public Date getSaveDate() {
-        return saveDate;
-    }
-
-    public void setSaveDate(Date saveDate) {
-        this.saveDate = saveDate;
-    }
-
-    public String getSensorId() {
-        return sensorId;
-    }
-
-    public void setSensorId(String sensorId) {
-        this.sensorId = sensorId;
-    }
-
-    public String getCaptureTypeName() {
-        return captureTypeName;
-    }
-
-    public void setCaptureTypeName(String captureTypeName) {
-        this.captureTypeName = captureTypeName;
     }
 }

@@ -1,9 +1,8 @@
 package co.edu.usta.telco.iot.data.repository;
 
 import co.edu.usta.telco.iot.data.model.Sensor;
-import org.springframework.data.mongodb.repository.MongoRepository;
-
 import java.util.List;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
  */

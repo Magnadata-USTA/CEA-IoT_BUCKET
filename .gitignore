@@ -1,0 +1,10 @@
+/.nb-gradle/*
+/.gradle/*
+/.idea/*
+/build/*
+/out/*
+.nb-gradle-properties
+/src/main/resources/static/lib/*
+*.iml
+*.ipr
+.idea
