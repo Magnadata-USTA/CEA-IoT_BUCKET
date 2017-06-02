@@ -8,6 +8,7 @@ import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import co.edu.usta.telco.iot.data.repository.SensorRepository;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
+import co.edu.usta.telco.iot.service.CaptureService;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.Date;
@@ -33,6 +34,10 @@ public class CaptureMainController {
 
     @Autowired
     private CaptureRepository captureRepository;
+
+    @Autowired
+    private CaptureService captureService;
+
 
     @RequestMapping(value = {"/sensors/captures"}, method = RequestMethod.GET)
     String getAllModel(Model model, @RequestParam(required = false) String solutionId,
@@ -109,7 +114,7 @@ public class CaptureMainController {
     String saveEdit(@ModelAttribute Capture capture, Model model, Principal principal) {
         Sensor linkedSensor = sensorRepository.findOne(capture.getSensorId());
         Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
-        captureRepository.save(capture);
+        captureService.save(capture);
         return getAllModel(model, linkedDevice.getSolutionId(),
                            linkedSensor.getDeviceId(), capture.getSensorId(), principal);
     }

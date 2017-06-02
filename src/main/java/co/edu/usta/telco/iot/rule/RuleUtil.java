@@ -44,15 +44,14 @@ public final class RuleUtil {
 
         String operator = "";
 
-        if (StringUtils.isBlank(condition)){
+        if (StringUtils.isBlank(condition)) {
             LOGGER.error("The condition parameter is empty");
             throw new IllegalArgumentException("The condition is empty");
         }
 
         operator = findOperator(condition, operator);
 
-        String[] splittedCondition = condition.split(operator);
-
+        String[] splittedCondition = StringUtils.split(condition, operator);
 
         if (splittedCondition.length < 2) {
             LOGGER.error("Two elements are required to operate");
@@ -61,12 +60,12 @@ public final class RuleUtil {
 
 //        Operable operable = convertToOperable(splittedCondition[0]);
 
-        switch(operator){
+        switch (operator) {
             case EQUALS:
                 return processEquals(dataType, splittedCondition);
             // break; not necessary as return above
-//            case DIFFERENT:
-//                return processDifferent(dataType, splittedCondition);
+            case DIFFERENT:
+                return processDifferent(dataType, splittedCondition);
 //            // break; not necessary as return above
 //            case BIGGER:
 //                return processBigger(dataType, splittedCondition);
@@ -84,6 +83,10 @@ public final class RuleUtil {
         }
 
         return true;
+    }
+
+    private static boolean processDifferent(RuleDataType dataType, String[] splittedCondition) {
+        return !processEquals(dataType, splittedCondition);
     }
 
     private static boolean processEquals(RuleDataType dataType, String[] splittedCondition) {

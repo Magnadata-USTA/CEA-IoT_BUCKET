@@ -2,11 +2,13 @@ package co.edu.usta.telco.iot.web;
 
 import co.edu.usta.telco.iot.data.model.*;
 import co.edu.usta.telco.iot.data.repository.*;
+import co.edu.usta.telco.iot.web.validation.AlertValidator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -31,6 +33,9 @@ public class AlertMainController {
 
     @Autowired
     private AlertRepository alertRepository;
+
+    @Autowired
+    AlertValidator alertValidator;
 
     @RequestMapping(value = {"/sensors/alerts"}, method = RequestMethod.GET)
     String getAllModel(Model model, @RequestParam(required = false) String solutionId,
@@ -76,7 +81,10 @@ public class AlertMainController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/sensors/{sensorId}/alerts")
     String create(@ModelAttribute Alert alert, Model model,
-                  @PathVariable(required = false) String sensorId, Principal principal) {
+                  @PathVariable(required = false) String sensorId, BindingResult bindingResult, Principal principal) {
+
+        alertValidator.validate(alert, bindingResult);
+
         alertRepository.save(alert);
 
         Sensor linkedSensor = sensorRepository.findOne(sensorId);

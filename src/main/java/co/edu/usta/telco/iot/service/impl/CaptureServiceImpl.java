@@ -1,5 +1,6 @@
 package co.edu.usta.telco.iot.service.impl;
 
+import co.edu.usta.telco.iot.aspect.alert.AlertAspectService;
 import co.edu.usta.telco.iot.data.model.*;
 import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
@@ -30,6 +31,9 @@ public class CaptureServiceImpl implements CaptureService {
 
     @Autowired
     private CaptureRepository captureRepository;
+
+    @Autowired
+    public AlertAspectService alertAspectService;
 
     @Override
     public boolean validatePermissionsForCapture(User user, Capture capture) {
@@ -65,13 +69,19 @@ public class CaptureServiceImpl implements CaptureService {
 
         Solution solution = solutionRepository.findOne(device.getSolutionId());
 
-        if ( StringUtils.equals( user.getLogin() , solution.getLogin() ) ) {
+        if ( StringUtils.equals( user.getLogin(), solution.getLogin() ) ) {
             return true;
         }
 
         return false;
     }
 
+    @Override
+    public Capture save(Capture capture) {
+        capture = captureRepository.save(capture);
+        // TODO: to be called using an aspect
+        alertAspectService.afterCreatedCapture(capture);
+        return capture;
+    }
 
 }
-

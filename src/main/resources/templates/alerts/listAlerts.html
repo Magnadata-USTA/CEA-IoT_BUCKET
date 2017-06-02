@@ -19,7 +19,7 @@
                     <div class="container-fluid" style="width:60%;overflow:auto;">
 
                         <div class="ui-widget">
-                            <h4>List of Alerts</h4>
+                            <h4>Alert Administration</h4>
                         </div>
 
                         <!--div class="ui-widget">
@@ -81,14 +81,20 @@
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon4">Alert Type</span>
                                         <select id="combobox-solutions" th:field="*{alertType}" >
-                                            <option value="">POST</option>
-                                            <option value="">EMAIL</option>
+                                            <option value="POST">POST</option>
+                                            <option value="EMAIL">EMAIL</option>
                                         </select>
                                     </div>
                                     <div class="input-group">
                                         <span class="input-group-addon" id="basic-addon5">Action</span>
                                         <input type="text" class="form-control" th:field="*{actionValue}" placeholder="" aria-describedby="basic-addon5"/>
                                         <input id="sensorId" type="hidden" th:field="*{sensorId}" />
+                                    </div>
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon6">Action Content</span>
+                                        <select id="combobox-content" th:field="*{alertType}" >
+                                            <option value="VALUE">VALUE</option>
+                                        </select>
                                     </div>
                                     <div class="input-group">
                                         <button type="submit" class="btn btn-default">Submit</button>

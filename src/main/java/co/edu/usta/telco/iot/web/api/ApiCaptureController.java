@@ -1,5 +1,6 @@
 package co.edu.usta.telco.iot.web.api;
 
+import co.edu.usta.telco.iot.aspect.alert.AlertAspectService;
 import co.edu.usta.telco.iot.data.model.Capture;
 import co.edu.usta.telco.iot.data.model.Sensor;
 import co.edu.usta.telco.iot.data.model.User;
@@ -31,6 +32,7 @@ public class ApiCaptureController {
 
     @Autowired
     private CaptureRepository captureRepository;
+
     @Autowired
     private SensorRepository sensorRepository;
 
@@ -39,6 +41,7 @@ public class ApiCaptureController {
 
     @Autowired
     private CaptureService captureService;
+
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<List<Capture>> getAll(@PathVariable String sensorId) {
@@ -95,7 +98,7 @@ public class ApiCaptureController {
             throw new UnauthorizedException();
         }
 
-        captureRepository.save(capture);
+        captureService.save(capture);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 

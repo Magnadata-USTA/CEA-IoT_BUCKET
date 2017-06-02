@@ -11,5 +11,6 @@ public interface CaptureService {
     boolean validatePermissionsForCapture(User user, Capture capture);
 
     boolean validatePermissionsForSensor(User user, Sensor sensor);
-    
+
+    Capture save(Capture capture);
 }
