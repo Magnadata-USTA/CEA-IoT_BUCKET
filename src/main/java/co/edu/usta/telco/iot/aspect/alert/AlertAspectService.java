@@ -124,6 +124,7 @@ public class AlertAspectService {
     }
 
     private boolean evaluateCondition(String condition, RuleDataType dataType) {
+        LOGGER.info("*** Evaluating condition {} {}", condition, dataType );
         return RuleUtil.evaluate(condition, dataType);
     }
 
