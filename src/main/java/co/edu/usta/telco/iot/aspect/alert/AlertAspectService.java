@@ -101,6 +101,7 @@ public class AlertAspectService {
                     HttpClient client = HttpClientBuilder.create().build();
                     // TODO: add headers
                     HttpPost post = new HttpPost(actionValue);
+                    LOGGER.info("*** posting to URL " + actionValue);
                     post.setEntity(EntityBuilder.create().setText(StringUtils.isEmpty(actionContent)?"DUMMY":actionContent).build()); // TODO: allow empty post without dummy
                     executePost(client, post);
                     break;
