@@ -1,0 +1,70 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/mainLayout">
+    <head>
+        <title>Edit Alerts</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <form action="#" th:action="@{'/sensors/'+ ${alert.sensorId} + '/alerts/saveEdit' }" th:object="${alert}" method="post">
+                <div class="container-fluid" style="width:50%">
+                <table token="submit" class="display" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <p> Edit Alert: </p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p> <input type="hidden" th:field="*{id}" /> </p>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                            <p> Name <input type="text" class="form-control" th:field="*{name}" placeholder="Name" aria-describedby="basic-addon1"/> </p>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                            <p> Conditions <input type="text" class="form-control" th:field="*{conditions}" placeholder="value > 10.0" aria-describedby="basic-addon2"/> </p>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                            <p> Numeric <input type="checkbox" value="Number" placeholder="Numeric" /></p>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                            <p> Alert Type <select id="combobox-solutions" th:field="*{alertType}" >
+                                <option value="">POST</option>
+                                <option value="">EMAIL</option>
+                            </select> </p>
+                        </td>
+                    </tr>
+                    <tr>
+
+                        <td>
+                            <p> Action Value
+                                <input type="text" class="form-control" th:field="*{actionValue}" placeholder="" aria-describedby="basic-addon5"/>
+                                <input id="sensorId" type="hidden" th:field="*{sensorId}" />
+                                <input type="submit" />
+                            </p>
+                        </td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+                </div>
+            </form>
+        </div>
+
+    </body>
+</html>
+

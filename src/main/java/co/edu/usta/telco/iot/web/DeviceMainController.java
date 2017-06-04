@@ -2,9 +2,12 @@ package co.edu.usta.telco.iot.web;
 
 import co.edu.usta.telco.iot.data.model.Device;
 import co.edu.usta.telco.iot.data.model.Solution;
-import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
+import co.edu.usta.telco.iot.service.DataCleanerService;
+import java.security.Principal;
+import java.util.Collections;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,10 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import java.security.Principal;
-import java.util.Collections;
-import java.util.List;
 
 @Controller
 public class DeviceMainController {
@@ -28,7 +27,7 @@ public class DeviceMainController {
     private DeviceRepository deviceRepository;
 
     @Autowired
-    private CaptureRepository captureRepository;
+    private DataCleanerService dataCleanerService;
 
     @RequestMapping(value = {"/solutions/devices","/solutions/{solutionId}/devices"}, method = RequestMethod.GET)
     String getAllModel(Model model, @PathVariable(required = false) String solutionId, Principal principal) {
@@ -56,7 +55,7 @@ public class DeviceMainController {
 
     @RequestMapping(path = "/solutions/{solutionId}/devices/delete/{deviceId}", method = RequestMethod.GET)
     String delete(@PathVariable String solutionId, @PathVariable String deviceId, Model model, Principal principal) {
-        deviceRepository.delete(deviceId);
+        dataCleanerService.deleteDeviceById(deviceId);
         return getAllModel(model, solutionId, principal);
     }
 

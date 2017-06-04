@@ -1,20 +1,37 @@
 package co.edu.usta.telco.iot.data.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
-import java.util.List;
-
 /**
- * Created by Felipe on 27/09/2016.
+ * Solution entity.
+ *
+ * @author Felipe on 27/09/2016.
+ * @version 1.0
+ * @since 1.0
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@ToString
+@EqualsAndHashCode(of = "id")
 @Document
 public class Solution implements Serializable {
+
+    /** Class serial version. */
+    private static final long serialVersionUID = -5289748644941948841L;
 
     @Id
     private String id;
@@ -25,47 +42,5 @@ public class Solution implements Serializable {
     private String login;
 
     @Transient
-    private List<Sensor> devices;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Sensor> getDevices() {
-        return devices;
-    }
-
-    public void setDevices(List<Sensor> devices) {
-        this.devices = devices;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return EqualsBuilder.reflectionEquals(this, obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return HashCodeBuilder.reflectionHashCode(this);
-    }
+    private final List<Device> devices = new ArrayList<>();
 }

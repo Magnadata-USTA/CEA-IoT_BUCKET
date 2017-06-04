@@ -7,16 +7,16 @@ import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import co.edu.usta.telco.iot.data.repository.SensorRepository;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
 import co.edu.usta.telco.iot.exception.UnauthorizedException;
+import co.edu.usta.telco.iot.service.DataCleanerService;
+import java.security.Principal;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
 
 @Controller
 public class SensorMainController {
@@ -29,6 +29,9 @@ public class SensorMainController {
 
     @Autowired
     private SensorRepository sensorRepository;
+
+    @Autowired
+    private DataCleanerService dataCleanerService;
 
     @RequestMapping(value = {"/devices/sensors"}, method = RequestMethod.GET)
     String getAllModelFiltered(Model model, @RequestParam(required = false) String solutionId,
@@ -76,7 +79,7 @@ public class SensorMainController {
     @RequestMapping(path = "/devices/{deviceId}/sensors/delete/{sensorId}", method = RequestMethod.GET)
     String delete(@PathVariable String deviceId,
                   @PathVariable String sensorId, Model model, Principal principal) {
-        deviceRepository.delete(sensorId);
+        dataCleanerService.deleteSensorById(sensorId);
         Device linkedDevice = deviceRepository.findOne(deviceId);
         return getAllModelFiltered(model, linkedDevice.getSolutionId(), deviceId, principal);
     }

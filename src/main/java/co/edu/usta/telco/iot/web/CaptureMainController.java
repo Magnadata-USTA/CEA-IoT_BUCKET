@@ -8,17 +8,17 @@ import co.edu.usta.telco.iot.data.repository.CaptureRepository;
 import co.edu.usta.telco.iot.data.repository.DeviceRepository;
 import co.edu.usta.telco.iot.data.repository.SensorRepository;
 import co.edu.usta.telco.iot.data.repository.SolutionRepository;
+import co.edu.usta.telco.iot.service.CaptureService;
+import java.security.Principal;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 @Controller
 public class CaptureMainController {
@@ -34,6 +34,10 @@ public class CaptureMainController {
 
     @Autowired
     private CaptureRepository captureRepository;
+
+    @Autowired
+    private CaptureService captureService;
+
 
     @RequestMapping(value = {"/sensors/captures"}, method = RequestMethod.GET)
     String getAllModel(Model model, @RequestParam(required = false) String solutionId,
@@ -95,8 +99,6 @@ public class CaptureMainController {
 
         Sensor linkedSensor = sensorRepository.findOne(sensorId);
         Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
-        List<Capture> listCaptures = captureRepository.findAll();
-        model.addAttribute("captures", listCaptures);
         model.addAttribute("capture", new Capture());
         return getAllModel(model, linkedDevice.getSolutionId(), linkedSensor.getDeviceId(), sensorId, principal);
     }
@@ -112,7 +114,7 @@ public class CaptureMainController {
     String saveEdit(@ModelAttribute Capture capture, Model model, Principal principal) {
         Sensor linkedSensor = sensorRepository.findOne(capture.getSensorId());
         Device linkedDevice = deviceRepository.findOne(linkedSensor.getDeviceId());
-        captureRepository.save(capture);
+        captureService.save(capture);
         return getAllModel(model, linkedDevice.getSolutionId(),
                            linkedSensor.getDeviceId(), capture.getSensorId(), principal);
     }

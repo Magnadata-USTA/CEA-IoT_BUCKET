@@ -1,17 +1,36 @@
 package co.edu.usta.telco.iot.data.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
-import java.util.List;
-
 /**
- * Created by Felipe on 27/09/2016.
+ * Device entity. 
+ * 
+ * @author Felipe on 27/09/2016.
+ * @version 1.0
+ * @since 1.0
  */
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@ToString
+@EqualsAndHashCode(of = "id")
 @Document
 public class Device implements Serializable {
+
+    /** Class serial version. */
+    private static final long serialVersionUID = 4891427062000408050L;
 
     @Id
     private String id;
@@ -21,37 +40,5 @@ public class Device implements Serializable {
     private String solutionId;
 
     @Transient
-    private List<Sensor> sensors;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSolutionId() {
-        return solutionId;
-    }
-
-    public void setSolutionId(String solutionId) {
-        this.solutionId = solutionId;
-    }
-
-    public List<Sensor> getSensors() {
-        return sensors;
-    }
-
-    public void setSensors(List<Sensor> devices) {
-        this.sensors = devices;
-    }
+    private final List<Sensor> sensors = new ArrayList();
 }

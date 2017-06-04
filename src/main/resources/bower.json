@@ -18,6 +18,7 @@
     "jquery": "~1.12.3",
     "jquery-ui": "~1.10.3",
     "datatables": "~1.10.12",
-    "bootstrap": "3.3.5"
+    "bootstrap": "3.3.5",
+    "font-awesome": "4.7.0"
   }
 }
